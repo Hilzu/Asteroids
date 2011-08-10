@@ -37,9 +37,6 @@ public class Main {
             System.out.println("Mouse down: X: " + x + " Y: " + y);
         }
 
-        if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-            System.out.println("Space pressed");
-        }
         while (Keyboard.next()) {
             if (Keyboard.getEventKeyState()) {
                 if (Keyboard.getEventKey() == Keyboard.KEY_A) {
