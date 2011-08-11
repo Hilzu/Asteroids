@@ -10,8 +10,12 @@ public class Main {
 
     public static void main(String[] args) {
         initDisplay();
+        Triangle triangle = new Triangle();
+        triangle.initShaders(null, null);
+        
 
         while (!Display.isCloseRequested()) {
+            triangle.draw();
             Display.update();
         }
 
@@ -23,6 +27,7 @@ public class Main {
         try {
             Display.setDisplayMode(new DisplayMode(DISPLAY_WIDTH, DISPLAY_HEIGHT));
             Display.setTitle("Asteroids");
+            Display.setVSyncEnabled(true);
             Display.create();
         } catch (LWJGLException ex) {
             ex.printStackTrace();
