@@ -17,17 +17,28 @@ public class Main {
         
         List<Drawable> drawables = new LinkedList<Drawable>();
         
-        final float[] vertices = {
-            0.0f, 0.9f, 0.0f,
-            -0.9f, -0.9f, 0.0f,
-            0.9f, -0.9f, 0.0f};
-        final float[] colors = {
-            1.0f, 1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,
-            0.0f, 0.0f, 1.0f};
-        drawables.add(new Triangle(vertices, colors));
+        float[] vertices1 = {
+            0.1f, 0.5f, 0.0f,
+            0.5f, 0.1f, 0.0f,
+            0.1f, 0.1f, 0.0f};
+        float[] colors1 = {
+            0.0f, 0.0f, 0.9f,
+            0.0f, 0.0f, 0.8f,
+            0.0f, 0.0f, 0.7f};
+        drawables.add(new Triangle(vertices1, colors1));
+        
+        float[] vertices2 = {
+            -0.1f, -0.5f, 0.0f,
+            -0.5f, 0.0f, 0.0f,
+            -0.1f, 0.5f, 0.0f};
+        float[] colors2 = {
+            0.7f, 0.0f, 0.0f,
+            1.0f, 0.0f, 0.0f,
+            0.3f, 0.0f, 0.0f};
+        drawables.add(new Triangle(vertices2, colors2));
 
         while (!Display.isCloseRequested()) {
+            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
             for (Drawable drawable : drawables) {
                 drawable.draw();
             }
