@@ -26,7 +26,6 @@ public class Triangle extends Drawable {
 
     @Override
     public void draw() {
-        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
         GL20.glUseProgram(programObject);
 
