@@ -1,4 +1,6 @@
 
+import java.util.LinkedList;
+import java.util.List;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -13,6 +15,8 @@ public class Main {
         initDisplay();
         GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         
+        List<Drawable> drawables = new LinkedList<Drawable>();
+        
         final float[] vertices = {
             0.0f, 0.9f, 0.0f,
             -0.9f, -0.9f, 0.0f,
@@ -21,10 +25,12 @@ public class Main {
             1.0f, 1.0f, 0.0f,
             0.0f, 1.0f, 0.0f,
             0.0f, 0.0f, 1.0f};
-        Triangle triangle = new Triangle(vertices, colors);
+        drawables.add(new Triangle(vertices, colors));
 
         while (!Display.isCloseRequested()) {
-            triangle.draw();
+            for (Drawable drawable : drawables) {
+                drawable.draw();
+            }
             Display.update();
         }
 

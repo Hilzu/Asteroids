@@ -6,7 +6,7 @@ import java.nio.FloatBuffer;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
-public class Triangle {
+public class Triangle extends Drawable {
 
     private int programObject;
     private FloatBuffer verticesBuffer;
@@ -24,6 +24,7 @@ public class Triangle {
         programObject = ShaderManager.useShaders(Shader.SIMPLE);
     }
 
+    @Override
     public void draw() {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
