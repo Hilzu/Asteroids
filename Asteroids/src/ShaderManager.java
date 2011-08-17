@@ -1,16 +1,31 @@
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 import org.lwjgl.opengl.GL20;
 
-
 public class ShaderManager {
-    
+
+    public static int useShaders(Shader type) {
+        String vertShader;
+        String fragShader;
+        try {
+            vertShader = Tools.readStringFromFile("shaders/"
+                    + type.getVertShaderFileName());
+            fragShader = Tools.readStringFromFile("shaders/"
+                    + type.getFragShaderFileName());
+        } catch (IOException ex) {
+            System.out.println("Could not read shader from file!");
+            System.out.println(ex);
+            return 0;
+        }
+        return initShaders(vertShader, fragShader);
+    }
+
     public static int LoadShader(int type, String shaderSrc) {
         int shader;
-        IntBuffer compiled = ByteBuffer.allocateDirect(4)
-                .order(ByteOrder.nativeOrder()).asIntBuffer();
+        IntBuffer compiled = ByteBuffer.allocateDirect(4).order(ByteOrder.nativeOrder()).asIntBuffer();
 
         shader = GL20.glCreateShader(type);
 
@@ -29,29 +44,11 @@ public class ShaderManager {
             GL20.glDeleteShader(shader);
             return 0;
         }
-        
+
         return shader;
     }
 
-    public static int initShaders(String vShaderPath, String fShaderPath) {   //TODO: write this to read shader source from file
-        String fShaderStr = ""
-                + "#version 150                                              \n"
-                + "out vec4 vFragColor; // Fragment color to rasterize       \n"
-                + "in vec4 vVaryingColor; // Incoming color from vertex stage\n"
-                + "void main(void)                                           \n"
-                + "{                                                         \n"
-                + "    vFragColor = vVaryingColor;                           \n"
-                + "}";
-        String vShaderStr = ""
-                + "#version 150                                              \n"
-                + "in vec4 vVertex; // Vertex position attribute             \n"
-                + "in vec4 vColor; // Vertex color attribute                 \n"
-                + "out vec4 vVaryingColor; // Color value passed to fragment shader \n"
-                + "void main(void)                                           \n"
-                + "{                                                         \n"
-                + "vVaryingColor = vColor;// Simply copy the color value     \n"
-                + "gl_Position = vVertex; // Simply pass along the vertex position \n"
-                + "}";
+    public static int initShaders(String vShaderStr, String fShaderStr) {
 
         int vertexShader;
         int fragmentShader;
@@ -82,8 +79,7 @@ public class ShaderManager {
             GL20.glDeleteProgram(programObject);
             return 0;
         }
-        
-        return programObject;        
+
+        return programObject;
     }
-    
 }

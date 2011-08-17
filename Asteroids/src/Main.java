@@ -12,7 +12,16 @@ public class Main {
     public static void main(String[] args) {
         initDisplay();
         GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        Triangle triangle = new Triangle();    
+        
+        final float[] vertices = {
+            0.0f, 0.9f, 0.0f,
+            -0.9f, -0.9f, 0.0f,
+            0.9f, -0.9f, 0.0f};
+        final float[] colors = {
+            1.0f, 1.0f, 0.0f,
+            0.0f, 1.0f, 0.0f,
+            0.0f, 0.0f, 1.0f};
+        Triangle triangle = new Triangle(vertices, colors);
 
         while (!Display.isCloseRequested()) {
             triangle.draw();
