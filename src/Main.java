@@ -14,6 +14,7 @@ public class Main {
     public static void main(String[] args) {
         initDisplay();
         GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        ShaderManager.initShaders();
         
         List<Drawable> drawables = new LinkedList<Drawable>();
         

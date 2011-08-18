@@ -8,7 +8,6 @@ import org.lwjgl.opengl.GL20;
 
 public class Triangle extends Drawable {
 
-    private int programObject;
     private FloatBuffer verticesBuffer;
     private FloatBuffer colorBuffer;
 
@@ -20,14 +19,12 @@ public class Triangle extends Drawable {
         colorBuffer = ByteBuffer.allocateDirect(colors.length * 4)
                 .order(ByteOrder.nativeOrder()).asFloatBuffer();
         colorBuffer.put(colors).position(0);
-        
-        programObject = ShaderManager.useShaders(Shader.SIMPLE);
     }
 
     @Override
     public void draw() {
 
-        GL20.glUseProgram(programObject);
+        ShaderManager.useShader(Shader.SIMPLE);
 
         GL20.glVertexAttribPointer(0, 3, false, 0, verticesBuffer);
         GL20.glVertexAttribPointer(1, 3, false, 0, colorBuffer);
