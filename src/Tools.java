@@ -15,7 +15,7 @@ import java.io.IOException;
  */
 class Tools {
 
-    static String readStringFromFile(String path) throws IOException {
+    static String readStringFromFile(String path) {
         File fileHandle = new File(path);
         BufferedReader inputReader = null;
         try {
@@ -29,19 +29,24 @@ class Tools {
         StringBuilder string = new StringBuilder();
 
         try {
-            while (true) {
-
-                line = inputReader.readLine();
-
-                if (line == null) {
-                    break;
+            try {
+                while (true) {
+                    
+                    line = inputReader.readLine();
+                    
+                    if (line == null) {
+                        break;
+                    }
+                    
+                    string.append(line);
+                    string.append(System.getProperty("line.separator"));
                 }
-
-                string.append(line);
-                string.append(System.getProperty("line.separator"));
+            } finally {
+                inputReader.close();
             }
-        } finally {
-            inputReader.close();
+        } catch (IOException ex) {
+            System.out.println(ex);
+            System.exit(1);
         }
 
         return string.toString();
