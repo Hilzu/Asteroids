@@ -1,4 +1,4 @@
-#version 330
+#version 140
 
 in vec4 vVertex; // Vertex position attribute
 in vec4 vColor; // Vertex color attribute
