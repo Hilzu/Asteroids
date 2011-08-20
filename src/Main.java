@@ -5,6 +5,8 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.OpenGLException;
+import org.lwjgl.opengl.Util;
 
 public class Main {
 
@@ -44,6 +46,12 @@ public class Main {
                 drawable.draw();
             }
             Display.update();
+            
+            try {
+                Util.checkGLError();
+            } catch (OpenGLException ex) {
+                System.out.println(ex);
+            }
         }
 
         Display.destroy();
@@ -57,8 +65,9 @@ public class Main {
             Display.setVSyncEnabled(true);
             Display.create();
         } catch (LWJGLException ex) {
+            System.out.println("Could not init display!");
             ex.printStackTrace();
-            System.exit(0);
+            System.exit(1);
         }
     }
 }
