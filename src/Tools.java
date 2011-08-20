@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
 
 /*
  * To change this template, choose Tools | Templates
@@ -50,5 +53,12 @@ class Tools {
         }
 
         return string.toString();
+    }
+    
+    public static FloatBuffer floatArrayToFloatBuffer(float[] floatArray) {
+        FloatBuffer floatBuffer = ByteBuffer.allocateDirect(floatArray.length * 4)
+                .order(ByteOrder.nativeOrder()).asFloatBuffer();
+        floatBuffer.put(floatArray).position(0);
+        return floatBuffer;
     }
 }

@@ -18,36 +18,17 @@ public class Main {
         initDisplay();
         GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         ShaderManager.initShaders();
+        enableAntiAliasing();
         
         List<Drawable> drawables = new LinkedList<Drawable>();
-        
-        float[] vertices1 = {
-            0.1f, 0.5f, 0.0f,
-            0.5f, 0.1f, 0.0f,
-            0.1f, 0.1f, 0.0f};
-        float[] colors1 = {
-            0.0f, 0.0f, 0.9f,
-            0.0f, 0.0f, 0.8f,
-            0.0f, 0.0f, 0.7f};
-        drawables.add(new Triangle(vertices1, colors1));
-        
-        float[] vertices2 = {
-            -0.1f, -0.5f, 0.0f,
-            -0.5f, 0.0f, 0.0f,
-            -0.1f, 0.5f, 0.0f};
-        float[] colors2 = {
-            0.7f, 0.0f, 0.0f,
-            1.0f, 0.0f, 0.0f,
-            0.3f, 0.0f, 0.0f};
-        drawables.add(new Triangle(vertices2, colors2));
-        
-        Matrix4f mvp = new Matrix4f();
+        Player player = new Player();
+        drawables.add(player);
 
         while (!Display.isCloseRequested()) {
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
             
             for (Drawable drawable : drawables) {
-                drawable.draw(mvp);
+                drawable.draw();
             }
             Display.update();
             
@@ -56,13 +37,9 @@ public class Main {
             } catch (OpenGLException ex) {
                 System.out.println(ex);
             }
-            
-            Vector2f vec2 = new Vector2f(0.0001f,0.0001f);
-            mvp.translate(vec2);
         }
 
         Display.destroy();
-
     }
 
     private static void initDisplay() {
@@ -76,5 +53,16 @@ public class Main {
             ex.printStackTrace();
             System.exit(1);
         }
+    }
+
+    private static void enableAntiAliasing() {
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glEnable(GL11.GL_POINT_SMOOTH);
+        GL11.glHint(GL11.GL_POINT_SMOOTH_HINT, GL11.GL_NICEST);
+        GL11.glEnable(GL11.GL_LINE_SMOOTH);
+        GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
+        GL11.glEnable(GL11.GL_POLYGON_SMOOTH);
+        GL11.glHint(GL11.GL_POLYGON_SMOOTH_HINT, GL11.GL_NICEST);
     }
 }
