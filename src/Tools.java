@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import org.lwjgl.opengl.OpenGLException;
+import org.lwjgl.opengl.Util;
 
 /*
  * To change this template, choose Tools | Templates
@@ -60,5 +62,17 @@ class Tools {
                 .order(ByteOrder.nativeOrder()).asFloatBuffer();
         floatBuffer.put(floatArray).position(0);
         return floatBuffer;
+    }
+    
+    public static void checkGLErrors(String msg) {
+        while (true) {                
+                try {
+                    Util.checkGLError();
+                    break;
+                } catch (OpenGLException ex) {
+                    System.out.println(msg);
+                    System.out.println(ex.getMessage());
+                }
+            }
     }
 }
