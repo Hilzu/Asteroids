@@ -3,6 +3,8 @@ import java.nio.FloatBuffer;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.Vector3f;
 
 public class Player implements Movable {
 
@@ -45,6 +47,14 @@ public class Player implements Movable {
 
     @Override
     public void move(float angle, float distance) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Vector3f rotateAxis = new Vector3f(0, 0, -1.0f);
+        rotateAxis.normalise();
+        modelView.rotate(angle, rotateAxis);
+        
+        Vector2f distVec = new Vector2f(0, distance);
+        modelView.translate(distVec);
+        
+        modelView.store(mvpBuffer);
+        mvpBuffer.position(0);
     }
 }

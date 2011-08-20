@@ -23,6 +23,9 @@ public class Main {
         List<Drawable> drawables = new LinkedList<Drawable>();
         Player player = new Player();
         drawables.add(player);
+        
+        float angle = 0.0001f;
+        float dist = 0.00001f;
 
         while (!Display.isCloseRequested()) {
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
@@ -37,6 +40,9 @@ public class Main {
             } catch (OpenGLException ex) {
                 System.out.println(ex);
             }
+            
+            player.move(angle, dist);
+            //angle += 0.1f;
         }
 
         Display.destroy();
