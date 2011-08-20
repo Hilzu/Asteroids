@@ -5,6 +5,7 @@ import java.nio.FloatBuffer;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.util.vector.*;
 
 public class Triangle extends Drawable {
 
@@ -23,8 +24,16 @@ public class Triangle extends Drawable {
 
     @Override
     public void draw() {
-
-        ShaderManager.useShader(Shader.SIMPLE);
+        this.draw(new Matrix4f()); 
+    }
+    
+    @Override
+    public void draw(Matrix4f mvp) {
+        FloatBuffer mvpBuffer = ByteBuffer.allocateDirect(16 * 4)
+                .order(ByteOrder.nativeOrder()).asFloatBuffer();
+        mvp.store(mvpBuffer);
+        mvpBuffer.position(0);
+        ShaderManager.useShader(Shader.FLAT, mvpBuffer);
 
         GL20.glVertexAttribPointer(0, 3, false, 0, verticesBuffer);
         GL20.glVertexAttribPointer(1, 3, false, 0, colorBuffer);

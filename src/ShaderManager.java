@@ -1,6 +1,7 @@
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.EnumMap;
 import java.util.Map;
@@ -18,18 +19,26 @@ public class ShaderManager {
             String fragShader = Tools.readStringFromFile("shaders/"
                     + shader.getFragShaderFileName());
 
-            int programObject = createShaderProgram(vertShader, fragShader);
+            int programObject = createShaderProgram(vertShader, fragShader, shader);
             shaderPrograms.put(shader, programObject);
         }
     }
 
-    public static void useShader(Shader shaderType) {
+    public static void useShader(Shader shaderType, FloatBuffer... uniforms) {
         if (!shaderPrograms.containsKey(shaderType)) {
             System.out.println("Shader " + shaderType + " not initialized! "
                     + "Have you ran initShaders()?");
             System.exit(1);
         }
         GL20.glUseProgram(shaderPrograms.get(shaderType));
+        
+        switch (shaderType) {
+            case FLAT:
+                int uniformLoc = GL20.glGetUniformLocation(shaderPrograms.get(shaderType),
+                "mvpMat");
+                GL20.glUniformMatrix4(uniformLoc, false, uniforms[0]);
+                break;
+        }
     }
 
     private static int compileShader(int shaderType, String shaderSrc) {
@@ -60,7 +69,7 @@ public class ShaderManager {
         return shader;
     }
 
-    private static int createShaderProgram(String vShaderStr, String fShaderStr) {
+    private static int createShaderProgram(String vShaderStr, String fShaderStr, Shader shaderType) {
 
         int vertexShader;
         int fragmentShader;
@@ -76,9 +85,8 @@ public class ShaderManager {
 
         GL20.glAttachShader(programObject, vertexShader);
         GL20.glAttachShader(programObject, fragmentShader);
-
-        GL20.glBindAttribLocation(programObject, 0, "vVertex");  // TODO: make this generic
-        GL20.glBindAttribLocation(programObject, 1, "vColor");
+        
+        bindAttributes(programObject, shaderType);
 
         GL20.glLinkProgram(programObject);
 
@@ -92,5 +100,17 @@ public class ShaderManager {
         }
 
         return programObject;
+    }
+
+    private static void bindAttributes(int programObject, Shader shader) {
+        String[] attributes = shader.getAttributes();
+        
+        if (attributes == null) {
+            return;
+        }
+        
+        for (int i = 0; i < attributes.length; i++) {
+            GL20.glBindAttribLocation(programObject, i, attributes[i]);
+        }     
     }
 }
