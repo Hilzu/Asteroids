@@ -2,9 +2,9 @@
 import org.lwjgl.util.vector.Matrix4f;
 
 
-public abstract class Drawable {
+public interface Drawable {
     
-    abstract void draw();
+    void draw();
 
-    abstract void draw(Matrix4f mvp);
+    void draw(Matrix4f mvp);
 }

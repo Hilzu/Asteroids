@@ -7,7 +7,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.*;
 
-public class Triangle extends Drawable {
+public class Triangle implements Drawable {
 
     private FloatBuffer verticesBuffer;
     private FloatBuffer colorBuffer;
