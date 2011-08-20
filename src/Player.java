@@ -37,17 +37,13 @@ public class Player implements Movable {
     @Override
     public void draw() {
         ShaderManager.useShader(Shader.FLAT, mvpBuffer, colorBuffer);
-        
-        int buffer = GL15.glGenBuffers();
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, buffer);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
+
+        Tools.dataToVertexBufferObject(verticesBuffer);
         GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);
-        
-        buffer = GL15.glGenBuffers();
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, buffer);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, colorBuffer, GL15.GL_STATIC_DRAW);
+
+        Tools.dataToVertexBufferObject(colorBuffer);
         GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 0, 0);
-        
+
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);
         

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.OpenGLException;
 import org.lwjgl.opengl.Util;
 
@@ -19,6 +20,7 @@ import org.lwjgl.opengl.Util;
  * @author hilzu
  */
 class Tools {
+    private static int bufferIndex = 0;
 
     static String readStringFromFile(String path) {
         File fileHandle = new File(path);
@@ -36,13 +38,13 @@ class Tools {
         try {
             try {
                 while (true) {
-                    
+
                     line = inputReader.readLine();
-                    
+
                     if (line == null) {
                         break;
                     }
-                    
+
                     string.append(line);
                     string.append(System.getProperty("line.separator"));
                 }
@@ -56,23 +58,28 @@ class Tools {
 
         return string.toString();
     }
-    
+
     public static FloatBuffer floatArrayToFloatBuffer(float[] floatArray) {
-        FloatBuffer floatBuffer = ByteBuffer.allocateDirect(floatArray.length * 4)
-                .order(ByteOrder.nativeOrder()).asFloatBuffer();
+        FloatBuffer floatBuffer = ByteBuffer.allocateDirect(floatArray.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
         floatBuffer.put(floatArray).position(0);
         return floatBuffer;
     }
-    
+
     public static void checkGLErrors(String msg) {
-        while (true) {                
-                try {
-                    Util.checkGLError();
-                    break;
-                } catch (OpenGLException ex) {
-                    System.out.println(msg);
-                    System.out.println(ex.getMessage());
-                }
+        while (true) {
+            try {
+                Util.checkGLError();
+                break;
+            } catch (OpenGLException ex) {
+                System.out.println(msg);
+                System.out.println(ex.getMessage());
             }
+        }
+    }
+    
+    public static void dataToVertexBufferObject(FloatBuffer data) {
+        int buffer = GL15.glGenBuffers();
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, buffer);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, data, GL15.GL_STATIC_DRAW);
     }
 }
