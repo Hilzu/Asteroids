@@ -2,6 +2,7 @@
 import java.util.LinkedList;
 import java.util.List;
 import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
@@ -15,8 +16,13 @@ public class Main {
 
     private static final int DISPLAY_WIDTH = 800;
     private static final int DISPLAY_HEIGHT = 600;
+    private static final int KEY_FORWARD = Keyboard.KEY_W;
+    private static final int KEY_BACKWARD = Keyboard.KEY_S;
+    private static final int KEY_LEFT = Keyboard.KEY_A;
+    private static final int KEY_RIGHT = Keyboard.KEY_D;
     
     private static Player player;
+    private static float speed = 0;
 
     public static void main(String[] args) {
         initDisplay();
@@ -30,9 +36,6 @@ public class Main {
         player = new Player();
         drawables.add(player);
 
-        float angle = 0.0001f;
-        float dist = 0.00001f;
-
         while (!Display.isCloseRequested()) {
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
@@ -42,7 +45,6 @@ public class Main {
             }
             
             pollInput();
-            //player.move(angle, dist);
             Display.update();
             
             Tools.checkGLErrors("loop");
@@ -94,8 +96,28 @@ public class Main {
         playerPos.normalise();
         float angle = Vector2f.dot(playerPos, mousePos);
         
-        System.out.println(mousePos + ";" + playerPos + ";" + angle);
+        while (Keyboard.next()) {
+            if (Keyboard.getEventKeyState()) {
+                switch (Keyboard.getEventKey()) {
+                case KEY_FORWARD:
+                    speed = 0.00015f;
+                    break;
+                case KEY_BACKWARD:
+                    speed = -0.00015f;
+                    break;
+                }
+            } else {
+                switch (Keyboard.getEventKey()) {
+                case KEY_FORWARD:
+                    speed = 0;
+                    break;
+                case KEY_BACKWARD:
+                    speed = 0;
+                    break;
+                }
+            }
+        }
         
-        player.move(angle, 0);
+        player.move(angle, speed);
     }
 }
