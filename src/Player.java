@@ -18,7 +18,6 @@ public class Player implements Movable {
         1.0f, 1.0f, 1.0f,
         1.0f, 1.0f, 1.0f
     };
-    
     private FloatBuffer verticesBuffer;
     private FloatBuffer colorBuffer;
     private Matrix4f modelView;
@@ -45,7 +44,7 @@ public class Player implements Movable {
 
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);
-        
+
         GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
     }
 
@@ -54,10 +53,10 @@ public class Player implements Movable {
         Vector3f rotateAxis = new Vector3f(0, 0, -1.0f);
         rotateAxis.normalise();
         modelView.rotate(angle, rotateAxis);
-        
+
         Vector2f distVec = new Vector2f(0, distance);
         modelView.translate(distVec);
-        
+
         modelView.store(mvpBuffer);
         mvpBuffer.position(0);
     }
