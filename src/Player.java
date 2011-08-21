@@ -60,4 +60,10 @@ public class Player implements Movable {
         modelView.store(mvpBuffer);
         mvpBuffer.position(0);
     }
+    
+    public Vector2f getBearing() {   
+        
+        return new Vector2f(modelView.m00, modelView.m01);
+    }
+    
 }

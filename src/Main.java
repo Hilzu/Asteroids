@@ -2,20 +2,21 @@
 import java.util.LinkedList;
 import java.util.List;
 import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
-import org.lwjgl.opengl.OpenGLException;
 import org.lwjgl.opengl.PixelFormat;
-import org.lwjgl.opengl.Util;
-import org.lwjgl.util.vector.*;
+import org.lwjgl.util.vector.Vector2f;
 
 public class Main {
 
     private static final int DISPLAY_WIDTH = 800;
     private static final int DISPLAY_HEIGHT = 600;
+    
+    private static Player player;
 
     public static void main(String[] args) {
         initDisplay();
@@ -26,7 +27,7 @@ public class Main {
         enableAntiAliasing();
         Tools.checkGLErrors("init");
         List<Drawable> drawables = new LinkedList<Drawable>();
-        Player player = new Player();
+        player = new Player();
         drawables.add(player);
 
         float angle = 0.0001f;
@@ -39,10 +40,10 @@ public class Main {
                 drawable.draw();
 
             }
+            
+            pollInput();
+            //player.move(angle, dist);
             Display.update();
-
-            player.move(angle, dist);
-            //angle += 0.1f;
             
             Tools.checkGLErrors("loop");
         }
@@ -72,5 +73,29 @@ public class Main {
         GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
         GL11.glEnable(GL11.GL_POLYGON_SMOOTH);
         GL11.glHint(GL11.GL_POLYGON_SMOOTH_HINT, GL11.GL_NICEST);
+    }
+
+    private static void pollInput() {
+        float x = Mouse.getX();
+        float y = Mouse.getY();
+        
+        x -= DISPLAY_WIDTH / 2;
+        y -= DISPLAY_HEIGHT / 2;
+        
+        x /= DISPLAY_WIDTH / 2;
+        y /= DISPLAY_HEIGHT / 2;
+        
+        if (x == 0 && y == 0) {
+            return;
+        }
+        Vector2f mousePos = new Vector2f(x, y);
+        mousePos.normalise();
+        Vector2f playerPos = player.getBearing();
+        playerPos.normalise();
+        float angle = Vector2f.dot(playerPos, mousePos);
+        
+        System.out.println(mousePos + ";" + playerPos + ";" + angle);
+        
+        player.move(angle, 0);
     }
 }
