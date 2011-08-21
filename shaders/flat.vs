@@ -5,7 +5,7 @@ in vec4 vColor; // Vertex color attribute
 
 uniform mat4 mvpMat;    // Modelview Projection matrix
 
-out vec4 vVaryingColor; // Color value passed to fragment shader
+smooth out vec4 vVaryingColor; // Color value passed to fragment shader
 
 void main(void)
 {
