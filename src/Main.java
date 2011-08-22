@@ -10,6 +10,7 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.PixelFormat;
+import org.lwjgl.util.vector.Matrix2f;
 import org.lwjgl.util.vector.Vector2f;
 
 public class Main {
@@ -100,19 +101,19 @@ public class Main {
             if (Keyboard.getEventKeyState()) {
                 switch (Keyboard.getEventKey()) {
                 case KEY_FORWARD:
-                    speed = 0.00015f;
+                    speed += 0.00015f;
                     break;
                 case KEY_BACKWARD:
-                    speed = -0.00015f;
+                    speed -= 0.00015f;
                     break;
                 }
             } else {
                 switch (Keyboard.getEventKey()) {
                 case KEY_FORWARD:
-                    speed = 0;
+                    speed -= 0.00015f;
                     break;
                 case KEY_BACKWARD:
-                    speed = 0;
+                    speed += 0.00015f;
                     break;
                 }
             }

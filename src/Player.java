@@ -20,7 +20,7 @@ public class Player implements Movable {
     };
     private FloatBuffer verticesBuffer;
     private FloatBuffer colorBuffer;
-    private Matrix4f modelView;
+    public Matrix4f modelView;
     private FloatBuffer mvpBuffer;
 
     public Player() {
