@@ -14,6 +14,7 @@ import org.lwjgl.util.vector.Vector2f;
 
 public class Main {
 
+    private static final int FPS = 60;
     private static final int DISPLAY_WIDTH = 800;
     private static final int DISPLAY_HEIGHT = 600;
     private static final int KEY_FORWARD = Keyboard.KEY_W;
@@ -55,6 +56,7 @@ public class Main {
             Tools.updateFPS();
 
             Tools.checkGLErrors("loop");
+            Display.sync(FPS);
         }
 
         Display.destroy();
@@ -101,6 +103,7 @@ public class Main {
 
 
         Vector2f mouseDirection = new Vector2f(x, y);
+        System.out.println(mouseDirection);
         Vector2f playerDirection = player.getDirection();
         float angle;
         if (mouseDirection.x == 0 && mouseDirection.y == 0) {
