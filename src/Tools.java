@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import org.lwjgl.Sys;
+import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.OpenGLException;
 import org.lwjgl.opengl.Util;
@@ -20,7 +22,6 @@ import org.lwjgl.opengl.Util;
  * @author hilzu
  */
 class Tools {
-    private static int bufferIndex = 0;
 
     static String readStringFromFile(String path) {
         File fileHandle = new File(path);
@@ -76,10 +77,39 @@ class Tools {
             }
         }
     }
-    
+
     public static void dataToVertexBufferObject(FloatBuffer data) {
         int buffer = GL15.glGenBuffers();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, buffer);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, data, GL15.GL_STATIC_DRAW);
+    }
+
+    /**
+     * Get the time in milliseconds using LWJGL timer.
+     * 
+     * @return The system time in millisecons.
+     */
+    public static long getTime() {
+        return (Sys.getTime() * 1000) / Sys.getTimerResolution();
+    }
+    private static long lastFrame = 0;
+
+    public static int getDelta() {
+        long time = getTime();
+        int delta = (int) (time - lastFrame);
+        lastFrame = time;
+
+        return delta;
+    }
+    private static long lastFPS = getTime();
+    private static int fps = 0;
+
+    public static void updateFPS() {
+        if (getTime() - lastFPS > 1000) {
+            Display.setTitle("FPS: " + fps);
+            fps = 0; //reset the FPS counter
+            lastFPS += 1000; //add one second
+        }
+        fps++;
     }
 }

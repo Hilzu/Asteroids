@@ -10,7 +10,6 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.PixelFormat;
-import org.lwjgl.util.vector.Matrix2f;
 import org.lwjgl.util.vector.Vector2f;
 
 public class Main {
@@ -21,32 +20,40 @@ public class Main {
     private static final int KEY_BACKWARD = Keyboard.KEY_S;
     private static final int KEY_LEFT = Keyboard.KEY_A;
     private static final int KEY_RIGHT = Keyboard.KEY_D;
+    private static final float PLAYER_SPEED = 0.001f;
     
     private static Player player;
     private static float speed = 0;
 
     public static void main(String[] args) {
         initDisplay();
+        
         int vao = GL30.glGenVertexArrays();
         GL30.glBindVertexArray(vao);
+        
         GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        
         ShaderManager.initShaders();
+        
         enableAntiAliasing();
+        
         Tools.checkGLErrors("init");
+        
         List<Drawable> drawables = new LinkedList<Drawable>();
         player = new Player();
         drawables.add(player);
 
         while (!Display.isCloseRequested()) {
+            int delta = Tools.getDelta();
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
             for (Drawable drawable : drawables) {
                 drawable.draw();
-
             }
             
-            pollInput();
+            pollInput(delta);
             Display.update();
+            Tools.updateFPS();
             
             Tools.checkGLErrors("loop");
         }
@@ -58,7 +65,7 @@ public class Main {
         try {
             Display.setDisplayMode(new DisplayMode(DISPLAY_WIDTH, DISPLAY_HEIGHT));
             Display.setTitle("Asteroids");
-            Display.setVSyncEnabled(true);
+            // Display.setVSyncEnabled(true);
             Display.create(new PixelFormat(), new ContextAttribs(3, 2).withProfileCore(true));
         } catch (LWJGLException ex) {
             System.out.println("Could not init display!");
@@ -78,7 +85,7 @@ public class Main {
         GL11.glHint(GL11.GL_POLYGON_SMOOTH_HINT, GL11.GL_NICEST);
     }
 
-    private static void pollInput() {
+    private static void pollInput(int delta) {
         float x = Mouse.getX();
         float y = Mouse.getY();
         
@@ -101,24 +108,24 @@ public class Main {
             if (Keyboard.getEventKeyState()) {
                 switch (Keyboard.getEventKey()) {
                 case KEY_FORWARD:
-                    speed += 0.00015f;
+                    speed += PLAYER_SPEED;
                     break;
                 case KEY_BACKWARD:
-                    speed -= 0.00015f;
+                    speed -= PLAYER_SPEED;
                     break;
                 }
             } else {
                 switch (Keyboard.getEventKey()) {
                 case KEY_FORWARD:
-                    speed -= 0.00015f;
+                    speed -= PLAYER_SPEED;
                     break;
                 case KEY_BACKWARD:
-                    speed += 0.00015f;
+                    speed += PLAYER_SPEED;
                     break;
                 }
             }
         }
         
-        player.move(angle, speed);
+        player.move(angle, speed * delta);
     }
 }

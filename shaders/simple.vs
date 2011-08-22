@@ -3,7 +3,7 @@
 in vec4 vVertex; // Vertex position attribute
 in vec4 vColor; // Vertex color attribute
 
-out vec4 vVaryingColor; // Color value passed to fragment shader
+smooth out vec4 vVaryingColor; // Color value passed to fragment shader
 
 void main(void)
     {
