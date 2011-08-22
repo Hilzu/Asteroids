@@ -20,7 +20,7 @@ public class Player implements Movable {
     };
     private FloatBuffer verticesBuffer;
     private FloatBuffer colorBuffer;
-    public Matrix4f modelView;
+    private Matrix4f modelView;
     private FloatBuffer mvpBuffer;
 
     public Player() {
@@ -60,10 +60,14 @@ public class Player implements Movable {
         modelView.store(mvpBuffer);
         mvpBuffer.position(0);
     }
-    
-    public Vector2f getBearing() {   
-        
-        return new Vector2f(modelView.m00, modelView.m01);
+
+    public Vector2f getDirection() {
+
+        return new Vector2f(modelView.m10, modelView.m11);
     }
-    
+
+    public Vector2f getLocation() {
+        return new Vector2f(modelView.m30, modelView.m31);
+    }
+
 }

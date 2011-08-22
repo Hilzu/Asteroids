@@ -21,24 +21,23 @@ public class Main {
     private static final int KEY_LEFT = Keyboard.KEY_A;
     private static final int KEY_RIGHT = Keyboard.KEY_D;
     private static final float PLAYER_SPEED = 0.001f;
-    
     private static Player player;
     private static float speed = 0;
 
     public static void main(String[] args) {
         initDisplay();
-        
+
         int vao = GL30.glGenVertexArrays();
         GL30.glBindVertexArray(vao);
-        
+
         GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        
+
         ShaderManager.initShaders();
-        
+
         enableAntiAliasing();
-        
+
         Tools.checkGLErrors("init");
-        
+
         List<Drawable> drawables = new LinkedList<Drawable>();
         player = new Player();
         drawables.add(player);
@@ -50,11 +49,11 @@ public class Main {
             for (Drawable drawable : drawables) {
                 drawable.draw();
             }
-            
+
             pollInput(delta);
             Display.update();
             Tools.updateFPS();
-            
+
             Tools.checkGLErrors("loop");
         }
 
@@ -88,44 +87,52 @@ public class Main {
     private static void pollInput(int delta) {
         float x = Mouse.getX();
         float y = Mouse.getY();
-        
+
         x -= DISPLAY_WIDTH / 2;
         y -= DISPLAY_HEIGHT / 2;
-        
+
         x /= DISPLAY_WIDTH / 2;
         y /= DISPLAY_HEIGHT / 2;
-        
-        if (x == 0 && y == 0) {
-            return;
+
+        Vector2f playerPos = player.getLocation();
+
+        x -= playerPos.x;
+        y -= playerPos.y;
+
+
+        Vector2f mouseDirection = new Vector2f(x, y);
+        Vector2f playerDirection = player.getDirection();
+        float angle;
+        if (mouseDirection.x == 0 && mouseDirection.y == 0) {
+            angle = 0;
+        } else {
+            mouseDirection.normalise();
+            playerDirection.normalise();
+            angle = Vector2f.angle(mouseDirection, playerDirection);
         }
-        Vector2f mousePos = new Vector2f(x, y);
-        mousePos.normalise();
-        Vector2f playerPos = player.getBearing();
-        playerPos.normalise();
-        float angle = Vector2f.dot(playerPos, mousePos);
-        
+
         while (Keyboard.next()) {
             if (Keyboard.getEventKeyState()) {
                 switch (Keyboard.getEventKey()) {
-                case KEY_FORWARD:
-                    speed += PLAYER_SPEED;
-                    break;
-                case KEY_BACKWARD:
-                    speed -= PLAYER_SPEED;
-                    break;
+                    case KEY_FORWARD:
+                        speed += PLAYER_SPEED;
+                        break;
+                    case KEY_BACKWARD:
+                        speed -= PLAYER_SPEED;
+                        break;
                 }
             } else {
                 switch (Keyboard.getEventKey()) {
-                case KEY_FORWARD:
-                    speed -= PLAYER_SPEED;
-                    break;
-                case KEY_BACKWARD:
-                    speed += PLAYER_SPEED;
-                    break;
+                    case KEY_FORWARD:
+                        speed -= PLAYER_SPEED;
+                        break;
+                    case KEY_BACKWARD:
+                        speed += PLAYER_SPEED;
+                        break;
                 }
             }
         }
-        
+
         player.move(angle, speed * delta);
     }
 }
