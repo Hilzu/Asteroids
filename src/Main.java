@@ -37,7 +37,7 @@ public class Main {
 
         ShaderManager.initShaders();
 
-        enableAntiAliasing();
+        // enableAntiAliasing();
 
         Tools.checkGLErrors("init");
 
