@@ -23,7 +23,8 @@ public class Main {
     private static final int KEY_RIGHT = Keyboard.KEY_D;
     private static final float PLAYER_SPEED = 0.001f;
     private static Player player;
-    private static float speed = 0;
+    private static float ySpeed = 0;
+    private static float xSpeed = 0;
     private static int delta;
 
     public static void main(String[] args) {
@@ -94,25 +95,37 @@ public class Main {
             if (Keyboard.getEventKeyState()) {
                 switch (Keyboard.getEventKey()) {
                     case KEY_FORWARD:
-                        speed += PLAYER_SPEED;
+                        ySpeed += PLAYER_SPEED;
                         break;
                     case KEY_BACKWARD:
-                        speed -= PLAYER_SPEED;
+                        ySpeed -= PLAYER_SPEED;
+                        break;
+                    case KEY_LEFT:
+                        xSpeed -= PLAYER_SPEED;
+                        break;
+                    case KEY_RIGHT:
+                        xSpeed += PLAYER_SPEED;
                         break;
                 }
             } else {
                 switch (Keyboard.getEventKey()) {
                     case KEY_FORWARD:
-                        speed -= PLAYER_SPEED;
+                        ySpeed -= PLAYER_SPEED;
                         break;
                     case KEY_BACKWARD:
-                        speed += PLAYER_SPEED;
+                        ySpeed += PLAYER_SPEED;
+                        break;
+                    case KEY_LEFT:
+                        xSpeed += PLAYER_SPEED;
+                        break;
+                    case KEY_RIGHT:
+                        xSpeed -= PLAYER_SPEED;
                         break;
                 }
             }
         }
 
-        player.translate(0, speed * delta);
+        player.translate(xSpeed * delta, ySpeed * delta);
     }
 
     private static void pollMouse() {

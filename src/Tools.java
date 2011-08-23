@@ -86,6 +86,12 @@ class Tools {
     }
     private static long lastFrame = 0;
 
+    /**
+     * Calculates time passed in milliseconds since this method was called the last
+     * time. Used in making animation and movement FPS independent.
+     *
+     * @return Time passed in milliseconds since last time this method was called.
+     */
     public static int getDelta() {
         long time = getTime();
         int delta = (int) (time - lastFrame);
@@ -96,6 +102,9 @@ class Tools {
     private static long lastFPS = getTime();
     private static int fps = 0;
 
+    /**
+     * Calculates amount of frames rendered in a second
+     */
     public static void updateFPS() {
         if (getTime() - lastFPS > 1000) {
             Display.setTitle("FPS: " + fps);
