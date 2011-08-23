@@ -25,6 +25,8 @@ public class Main {
     private static Player player;
     private static float ySpeed = 0;
     private static float xSpeed = 0;
+    private static float asteroidYSpeed = 0.0010f;
+    private static float asteroidXSpeed = 0.0012f;
     private static int delta;
 
     public static void main(String[] args) {
@@ -47,20 +49,26 @@ public class Main {
         Asteroid asteroid = new Asteroid();
         drawables.add(asteroid);
 
+        Tools.getDelta();
+
         while (!Display.isCloseRequested()) {
             delta = Tools.getDelta();
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+
+            pollMouse();
+            pollKeyboard();
+            move(asteroid);
 
             for (Drawable drawable : drawables) {
                 drawable.draw();
             }
 
-            pollMouse();
-            pollKeyboard();
             Display.update();
+
             Tools.updateFPS();
 
             Tools.checkGLErrors("loop");
+
             Display.sync(FPS);
         }
 
@@ -163,6 +171,17 @@ public class Main {
         float newAngle = Vector2f.angle(mouseDirection, player.getDirection());
         if (newAngle > angle) {
             player.rotate(false, angle * 2);
+        }
+    }
+
+    private static void move(Movable movable) {
+        movable.translate(asteroidXSpeed * delta, asteroidYSpeed * delta);
+        Vector2f location = movable.getLocation();
+        if (location.x > 0.9f || location.x < -0.9f) {
+            asteroidXSpeed *= -1;
+        }
+        if (location.y > 0.9f || location.y < -0.9f) {
+            asteroidYSpeed *= -1;
         }
     }
 }

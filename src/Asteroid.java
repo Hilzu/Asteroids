@@ -10,13 +10,13 @@ public class Asteroid implements Movable {
 
     private static final float[] verts = {
         0.0f, 0.0f, 0.0f,
-        0.5f, 0.87f, 0.0f,
-        -0.5f, 0.87f, 0.0f,
-        -1.0f, 0.0f, 0.0f,
-        -0.5f, -0.87f, 0.0f,
-        0.5f, -0.87f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        0.5f, 0.87f, 0.0f
+        0.05f, 0.087f, 0.0f,
+        -0.05f, 0.087f, 0.0f,
+        -0.1f, 0.0f, 0.0f,
+        -0.05f, -0.087f, 0.0f,
+        0.05f, -0.087f, 0.0f,
+        0.1f, 0.0f, 0.0f,
+        0.05f, 0.087f, 0.0f
     };
     private static final float[] color = {
         1.0f, 1.0f, 1.0f,
@@ -37,7 +37,6 @@ public class Asteroid implements Movable {
         vertsBuffer = Tools.floatArrayToFloatBuffer(verts);
         colorBuffer = Tools.floatArrayToFloatBuffer(color);
         modelViewMatrix = new Matrix4f(); // Init Modelview matrix as Identity matrix
-        modelViewMatrix.scale(new Vector3f(0.1f, 0.1f, 0.1f));
         modelViewBuffer = Tools.floatArrayToFloatBuffer(new float[16]);
         modelViewMatrix.store(modelViewBuffer);
         modelViewBuffer.position(0);
