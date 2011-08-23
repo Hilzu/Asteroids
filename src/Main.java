@@ -24,6 +24,7 @@ public class Main {
     private static final float PLAYER_SPEED = 0.001f;
     private static Player player;
     private static float speed = 0;
+    private static int delta;
 
     public static void main(String[] args) {
         initDisplay();
@@ -44,14 +45,15 @@ public class Main {
         drawables.add(player);
 
         while (!Display.isCloseRequested()) {
-            int delta = Tools.getDelta();
+            delta = Tools.getDelta();
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
             for (Drawable drawable : drawables) {
                 drawable.draw();
             }
 
-            pollInput(delta);
+            pollMouse();
+            pollKeyboard();
             Display.update();
             Tools.updateFPS();
 
@@ -86,33 +88,7 @@ public class Main {
         GL11.glHint(GL11.GL_POLYGON_SMOOTH_HINT, GL11.GL_NICEST);
     }
 
-    private static void pollInput(int delta) {
-        float x = Mouse.getX();
-        float y = Mouse.getY();
-
-        x -= DISPLAY_WIDTH / 2;
-        y -= DISPLAY_HEIGHT / 2;
-
-        x /= DISPLAY_WIDTH / 2;
-        y /= DISPLAY_HEIGHT / 2;
-
-        Vector2f playerPos = player.getLocation();
-
-        x -= playerPos.x;
-        y -= playerPos.y;
-
-
-        Vector2f mouseDirection = new Vector2f(x, y);
-        System.out.println(mouseDirection);
-        Vector2f playerDirection = player.getDirection();
-        float angle;
-        if (mouseDirection.x == 0 && mouseDirection.y == 0) {
-            angle = 0;
-        } else {
-            mouseDirection.normalise();
-            playerDirection.normalise();
-            angle = Vector2f.angle(mouseDirection, playerDirection);
-        }
+    private static void pollKeyboard() {
 
         while (Keyboard.next()) {
             if (Keyboard.getEventKeyState()) {
@@ -136,6 +112,39 @@ public class Main {
             }
         }
 
-        player.move(angle, speed * delta);
+        player.translate(0, speed * delta);
+    }
+
+    private static void pollMouse() {
+        float x = Mouse.getX();
+        float y = Mouse.getY();
+
+        // Project screen coordinates to normal [-1.0, 1.0] coordinate space
+        x -= DISPLAY_WIDTH / 2;
+        y -= DISPLAY_HEIGHT / 2;
+        x /= DISPLAY_WIDTH / 2;
+        y /= DISPLAY_HEIGHT / 2;
+
+
+        Vector2f mouseDirection = new Vector2f(x, y);
+        // Angle calculations assume player is at (0,0). Translate mouse vector to match this assumption.
+        Vector2f.sub(mouseDirection, player.getLocation(), mouseDirection);
+        Vector2f playerDirection = player.getDirection();
+
+        float angle;    // Amount to rotate player in radians
+        // Mouse is at the exact same location as player
+        if (mouseDirection.x == 0 && mouseDirection.y == 0) {
+            return;
+        }
+
+        angle = Vector2f.angle(mouseDirection, playerDirection);
+
+        // Assume that angle means rotation in clockwise direction.
+        player.rotate(true, angle);
+        // If new angle after rotation is bigger, rotation should have been in counter-clockwise direction.
+        float newAngle = Vector2f.angle(mouseDirection, player.getDirection());
+        if (newAngle > angle) {
+            player.rotate(false, angle * 2);
+        }
     }
 }

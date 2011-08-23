@@ -18,28 +18,28 @@ public class Player implements Movable {
         1.0f, 1.0f, 1.0f,
         1.0f, 1.0f, 1.0f
     };
-    private FloatBuffer vertsBuf;
-    private FloatBuffer colorBuf;
-    private Matrix4f modelView;
-    private FloatBuffer modelViewBuf;
+    private FloatBuffer vertsBuffer;
+    private FloatBuffer colorBuffer;
+    private Matrix4f modelViewMatrix;
+    private FloatBuffer modelViewBuffer;
 
     public Player() {
-        vertsBuf = Tools.floatArrToFloatBuf(verts);
-        colorBuf = Tools.floatArrToFloatBuf(color);
-        modelView = new Matrix4f(); // Init Modelview matrix as Identity matrix
-        modelViewBuf = Tools.floatArrToFloatBuf(new float[16]);
-        modelView.store(modelViewBuf);
-        modelViewBuf.position(0);
+        vertsBuffer = Tools.floatArrayToFloatBuffer(verts);
+        colorBuffer = Tools.floatArrayToFloatBuffer(color);
+        modelViewMatrix = new Matrix4f(); // Init Modelview matrix as Identity matrix
+        modelViewBuffer = Tools.floatArrayToFloatBuffer(new float[16]);
+        modelViewMatrix.store(modelViewBuffer);
+        modelViewBuffer.position(0);
     }
 
     @Override
     public void draw() {
-        ShaderManager.useShader(Shader.FLAT, modelViewBuf, colorBuf);
+        ShaderManager.useShader(Shader.FLAT, modelViewBuffer, colorBuffer);
 
-        Tools.dataToVertBufObj(vertsBuf);
+        Tools.dataToVertexBufferObject(vertsBuffer);
         GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);
 
-        Tools.dataToVertBufObj(colorBuf);
+        Tools.dataToVertexBufferObject(colorBuffer);
         GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 0, 0);
 
         GL20.glEnableVertexAttribArray(0);
@@ -56,30 +56,30 @@ public class Player implements Movable {
         } else {
             rotateAxis = new Vector3f(0, 0, 1.0f);
         }
-        modelView.rotate(radians, rotateAxis);
+        modelViewMatrix.rotate(radians, rotateAxis);
 
-        modelView.store(modelViewBuf);
-        modelViewBuf.position(0);
+        modelViewMatrix.store(modelViewBuffer);
+        modelViewBuffer.position(0);
     }
 
     @Override
     public void translate(float x, float y) {
         Vector2f translateVec = new Vector2f(x, y);
-        modelView.translate(translateVec);
+        modelViewMatrix.translate(translateVec);
 
-        modelView.store(modelViewBuf);
-        modelViewBuf.position(0);
+        modelViewMatrix.store(modelViewBuffer);
+        modelViewBuffer.position(0);
     }
 
     @Override
     public Vector2f getDirection() {
 
-        return new Vector2f(modelView.m10, modelView.m11);
+        return new Vector2f(modelViewMatrix.m10, modelViewMatrix.m11);
     }
 
     @Override
     public Vector2f getLocation() {
-        return new Vector2f(modelView.m30, modelView.m31);
+        return new Vector2f(modelViewMatrix.m30, modelViewMatrix.m31);
     }
 
 }

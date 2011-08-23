@@ -13,14 +13,6 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.OpenGLException;
 import org.lwjgl.opengl.Util;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-/**
- *
- * @author hilzu
- */
 class Tools {
 
     static String readStringFromFile(String path) {
@@ -86,7 +78,7 @@ class Tools {
 
     /**
      * Get the time in milliseconds using LWJGL timer.
-     * 
+     *
      * @return The system time in millisecons.
      */
     public static long getTime() {
