@@ -18,28 +18,28 @@ public class Player implements Movable {
         1.0f, 1.0f, 1.0f,
         1.0f, 1.0f, 1.0f
     };
-    private FloatBuffer verticesBuffer;
-    private FloatBuffer colorBuffer;
+    private FloatBuffer vertsBuf;
+    private FloatBuffer colorBuf;
     private Matrix4f modelView;
-    private FloatBuffer mvpBuffer;
+    private FloatBuffer modelViewBuf;
 
     public Player() {
-        verticesBuffer = Tools.floatArrayToFloatBuffer(verts);
-        colorBuffer = Tools.floatArrayToFloatBuffer(color);
+        vertsBuf = Tools.floatArrToFloatBuf(verts);
+        colorBuf = Tools.floatArrToFloatBuf(color);
         modelView = new Matrix4f(); // Init Modelview matrix as Identity matrix
-        mvpBuffer = Tools.floatArrayToFloatBuffer(new float[16]);
-        modelView.store(mvpBuffer);
-        mvpBuffer.position(0);
+        modelViewBuf = Tools.floatArrToFloatBuf(new float[16]);
+        modelView.store(modelViewBuf);
+        modelViewBuf.position(0);
     }
 
     @Override
     public void draw() {
-        ShaderManager.useShader(Shader.FLAT, mvpBuffer, colorBuffer);
+        ShaderManager.useShader(Shader.FLAT, modelViewBuf, colorBuf);
 
-        Tools.dataToVertexBufferObject(verticesBuffer);
+        Tools.dataToVertBufObj(vertsBuf);
         GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);
 
-        Tools.dataToVertexBufferObject(colorBuffer);
+        Tools.dataToVertBufObj(colorBuf);
         GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 0, 0);
 
         GL20.glEnableVertexAttribArray(0);
@@ -49,23 +49,35 @@ public class Player implements Movable {
     }
 
     @Override
-    public void move(float angle, float distance) {
-        Vector3f rotateAxis = new Vector3f(0, 0, -1.0f);
-        rotateAxis.normalise();
-        modelView.rotate(angle, rotateAxis);
+    public void rotate(boolean clockwise, float radians) {
+        Vector3f rotateAxis;
+        if (clockwise) {
+            rotateAxis = new Vector3f(0, 0, -1.0f);
+        } else {
+            rotateAxis = new Vector3f(0, 0, 1.0f);
+        }
+        modelView.rotate(radians, rotateAxis);
 
-        Vector2f distVec = new Vector2f(0, distance);
-        modelView.translate(distVec);
-
-        modelView.store(mvpBuffer);
-        mvpBuffer.position(0);
+        modelView.store(modelViewBuf);
+        modelViewBuf.position(0);
     }
 
+    @Override
+    public void translate(float x, float y) {
+        Vector2f translateVec = new Vector2f(x, y);
+        modelView.translate(translateVec);
+
+        modelView.store(modelViewBuf);
+        modelViewBuf.position(0);
+    }
+
+    @Override
     public Vector2f getDirection() {
 
         return new Vector2f(modelView.m10, modelView.m11);
     }
 
+    @Override
     public Vector2f getLocation() {
         return new Vector2f(modelView.m30, modelView.m31);
     }
