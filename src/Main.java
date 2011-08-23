@@ -16,7 +16,7 @@ public class Main {
 
     private static final int FPS = 60;
     private static final int DISPLAY_WIDTH = 800;
-    private static final int DISPLAY_HEIGHT = 600;
+    private static final int DISPLAY_HEIGHT = 800;
     private static final int KEY_FORWARD = Keyboard.KEY_W;
     private static final int KEY_BACKWARD = Keyboard.KEY_S;
     private static final int KEY_LEFT = Keyboard.KEY_A;
@@ -44,6 +44,8 @@ public class Main {
         List<Drawable> drawables = new LinkedList<Drawable>();
         player = new Player();
         drawables.add(player);
+        Asteroid asteroid = new Asteroid();
+        drawables.add(asteroid);
 
         while (!Display.isCloseRequested()) {
             delta = Tools.getDelta();
@@ -92,6 +94,7 @@ public class Main {
     private static void pollKeyboard() {
 
         while (Keyboard.next()) {
+            // Key down event
             if (Keyboard.getEventKeyState()) {
                 switch (Keyboard.getEventKey()) {
                     case KEY_FORWARD:
@@ -107,7 +110,9 @@ public class Main {
                         xSpeed += PLAYER_SPEED;
                         break;
                 }
-            } else {
+            }
+            // Key up event
+            else {
                 switch (Keyboard.getEventKey()) {
                     case KEY_FORWARD:
                         ySpeed -= PLAYER_SPEED;
