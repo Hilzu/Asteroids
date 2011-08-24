@@ -39,8 +39,6 @@ public class Main {
 
         ShaderManager.initShaders();
 
-        // enableAntiAliasing();
-
         Tools.checkGLErrors("init");
 
         List<Drawable> drawables = new LinkedList<Drawable>();
@@ -49,6 +47,7 @@ public class Main {
         Asteroid asteroid = new Asteroid();
         drawables.add(asteroid);
 
+        // Init frame delta time so that first reading is sane.
         Tools.getDelta();
 
         while (!Display.isCloseRequested()) {
@@ -79,24 +78,13 @@ public class Main {
         try {
             Display.setDisplayMode(new DisplayMode(DISPLAY_WIDTH, DISPLAY_HEIGHT));
             Display.setTitle("Asteroids");
-            // Display.setVSyncEnabled(true);
+            // Use OpenGL 3.2 Core profile so that deprecated functionality can't be used
             Display.create(new PixelFormat(), new ContextAttribs(3, 2).withProfileCore(true));
         } catch (LWJGLException ex) {
             System.out.println("Could not init display!");
             ex.printStackTrace();
             System.exit(1);
         }
-    }
-
-    private static void enableAntiAliasing() {
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glEnable(GL11.GL_BLEND);
-        //GL11.glEnable(GL11.GL_POINT_SMOOTH); // DEPRECATED
-        //GL11.glHint(GL11.GL_POINT_SMOOTH_HINT, GL11.GL_NICEST); // TODO: http://mmmovania.blogspot.com/2010/12/circular-point-sprites-in-opengl-33.html
-        GL11.glEnable(GL11.GL_LINE_SMOOTH);
-        GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
-        GL11.glEnable(GL11.GL_POLYGON_SMOOTH);
-        GL11.glHint(GL11.GL_POLYGON_SMOOTH_HINT, GL11.GL_NICEST);
     }
 
     private static void pollKeyboard() {

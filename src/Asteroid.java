@@ -2,7 +2,6 @@
 import java.nio.FloatBuffer;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.util.vector.Matrix4f;
 
 public class Asteroid extends Movable {
 
@@ -36,9 +35,7 @@ public class Asteroid extends Movable {
         vertsBuffer = Tools.floatArrayToFloatBuffer(verts);
         colorBuffer = Tools.floatArrayToFloatBuffer(color);
         modelViewBuffer = Tools.floatArrayToFloatBuffer(new float[16]);
-        modelViewMatrix.store(modelViewBuffer);
-        modelViewBuffer.position(0);
-        transformed = false;
+        transformed = true;
     }
 
     @Override
@@ -46,6 +43,7 @@ public class Asteroid extends Movable {
         if (transformed) {
             modelViewMatrix.store(modelViewBuffer);
             modelViewBuffer.position(0);
+            transformed = false;
         }
         ShaderManager.useShader(Shader.FLAT, modelViewBuffer, colorBuffer);
 

@@ -32,12 +32,11 @@ public class ShaderManager {
             System.exit(1);
         }
         GL20.glUseProgram(shaderPrograms.get(shaderType));
-        
+
         switch (shaderType) {
             case FLAT:
                 int uniformLoc = GL20.glGetUniformLocation(shaderPrograms
-                        .get(shaderType),
-                "mvpMat");
+                        .get(shaderType), "mvpMat");
                 GL20.glUniformMatrix4(uniformLoc, false, uniforms[0]);
                 break;
         }
@@ -89,7 +88,7 @@ public class ShaderManager {
 
         GL20.glAttachShader(programObject, vertexShader);
         GL20.glAttachShader(programObject, fragmentShader);
-        
+
         bindAttributes(programObject, shaderType);
 
         GL20.glLinkProgram(programObject);
@@ -109,13 +108,13 @@ public class ShaderManager {
 
     private static void bindAttributes(int programObject, Shader shader) {
         String[] attributes = shader.getAttributes();
-        
+
         if (attributes == null) {
             return;
         }
-        
+
         for (int i = 0; i < attributes.length; i++) {
             GL20.glBindAttribLocation(programObject, i, attributes[i]);
-        }     
+        }
     }
 }
