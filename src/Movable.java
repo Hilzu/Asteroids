@@ -1,13 +1,36 @@
 
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.Vector3f;
 
-interface Movable extends Drawable {
+public abstract class Movable implements Drawable {
 
-    public void rotate(boolean clockwise, float radians);
+    protected Matrix4f modelViewMatrix;
 
-    public void translate(float x, float y);
+    public Movable() {
+        modelViewMatrix = new Matrix4f();
+    }
 
-    public Vector2f getDirection();
+    public void rotate(boolean clockwise, float radians) {
+        Vector3f rotateAxis;
+        if (clockwise) {
+            rotateAxis = new Vector3f(0, 0, -1.0f);
+        } else {
+            rotateAxis = new Vector3f(0, 0, 1.0f);
+        }
+        modelViewMatrix.rotate(radians, rotateAxis);
+    }
 
-    public Vector2f getLocation();
+    public void translate(float x, float y) {
+        Vector2f translateVec = new Vector2f(x, y);
+        modelViewMatrix.translate(translateVec);
+    }
+
+    public Vector2f getDirection() {
+        return new Vector2f(modelViewMatrix.m10, modelViewMatrix.m11);
+    }
+
+    public Vector2f getLocation() {
+        return new Vector2f(modelViewMatrix.m30, modelViewMatrix.m31);
+    }
 }

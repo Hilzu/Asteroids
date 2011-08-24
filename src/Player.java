@@ -3,10 +3,8 @@ import java.nio.FloatBuffer;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
 
-public class Player implements Movable {
+public class Player extends Movable {
 
     private static final float[] verts = {
         0.0f, 0.05f, 0.0f,
@@ -20,20 +18,25 @@ public class Player implements Movable {
     };
     private FloatBuffer vertsBuffer;
     private FloatBuffer colorBuffer;
-    private Matrix4f modelViewMatrix;
     private FloatBuffer modelViewBuffer;
+    private boolean transformed;
 
     public Player() {
+        super();
         vertsBuffer = Tools.floatArrayToFloatBuffer(verts);
         colorBuffer = Tools.floatArrayToFloatBuffer(color);
-        modelViewMatrix = new Matrix4f(); // Init Modelview matrix as Identity matrix
         modelViewBuffer = Tools.floatArrayToFloatBuffer(new float[16]);
         modelViewMatrix.store(modelViewBuffer);
         modelViewBuffer.position(0);
+        transformed = false;
     }
 
     @Override
     public void draw() {
+        if (transformed) {
+            modelViewMatrix.store(modelViewBuffer);
+            modelViewBuffer.position(0);
+        }
         ShaderManager.useShader(Shader.FLAT, modelViewBuffer, colorBuffer);
 
         Tools.dataToVertexBufferObject(vertsBuffer);
@@ -50,36 +53,13 @@ public class Player implements Movable {
 
     @Override
     public void rotate(boolean clockwise, float radians) {
-        Vector3f rotateAxis;
-        if (clockwise) {
-            rotateAxis = new Vector3f(0, 0, -1.0f);
-        } else {
-            rotateAxis = new Vector3f(0, 0, 1.0f);
-        }
-        modelViewMatrix.rotate(radians, rotateAxis);
-
-        modelViewMatrix.store(modelViewBuffer);
-        modelViewBuffer.position(0);
+        super.rotate(clockwise, radians);
+        transformed = true;
     }
 
     @Override
     public void translate(float x, float y) {
-        Vector2f translateVec = new Vector2f(x, y);
-        modelViewMatrix.translate(translateVec);
-
-        modelViewMatrix.store(modelViewBuffer);
-        modelViewBuffer.position(0);
+        super.translate(x, y);
+        transformed = true;
     }
-
-    @Override
-    public Vector2f getDirection() {
-
-        return new Vector2f(modelViewMatrix.m10, modelViewMatrix.m11);
-    }
-
-    @Override
-    public Vector2f getLocation() {
-        return new Vector2f(modelViewMatrix.m30, modelViewMatrix.m31);
-    }
-
 }

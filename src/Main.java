@@ -16,7 +16,7 @@ public class Main {
 
     private static final int FPS = 60;
     private static final int DISPLAY_WIDTH = 800;
-    private static final int DISPLAY_HEIGHT = 800;
+    private static final int DISPLAY_HEIGHT = 600;
     private static final int KEY_FORWARD = Keyboard.KEY_W;
     private static final int KEY_BACKWARD = Keyboard.KEY_S;
     private static final int KEY_LEFT = Keyboard.KEY_A;
