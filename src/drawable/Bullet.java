@@ -9,8 +9,8 @@ import tool.Tools;
 
 public class Bullet extends Movable {
 
-    private static final float[] vert = { 0, 0, 0 };
-    private static final float[] color = { 1, 1, 1 };
+    private static final float[] vert = {0, 0, 0};
+    private static final float[] color = {1, 1, 1};
 
     public Bullet() {
         super(vert, color);
@@ -38,5 +38,4 @@ public class Bullet extends Movable {
     public void move(int coefficient) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
 }
