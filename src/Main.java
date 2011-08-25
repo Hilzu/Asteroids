@@ -14,20 +14,19 @@ import org.lwjgl.util.vector.Vector2f;
 
 public class Main {
 
-    private static final int FPS = 60;
-    private static final int DISPLAY_WIDTH = 800;
-    private static final int DISPLAY_HEIGHT = 600;
-    private static final int KEY_FORWARD = Keyboard.KEY_W;
-    private static final int KEY_BACKWARD = Keyboard.KEY_S;
-    private static final int KEY_LEFT = Keyboard.KEY_A;
-    private static final int KEY_RIGHT = Keyboard.KEY_D;
-    private static final float PLAYER_SPEED = 0.001f;
+    public static final int FPS = 60;
+    public static final int DISPLAY_WIDTH = 800;
+    public static final int DISPLAY_HEIGHT = 600;
+    public static final int KEY_FORWARD = Keyboard.KEY_W;
+    public static final int KEY_BACKWARD = Keyboard.KEY_S;
+    public static final int KEY_LEFT = Keyboard.KEY_A;
+    public static final int KEY_RIGHT = Keyboard.KEY_D;
+
     private static Player player;
-    private static float ySpeed = 0;
-    private static float xSpeed = 0;
     private static float asteroidYSpeed = 0.0010f;
     private static float asteroidXSpeed = 0.0012f;
-    private static int delta;
+
+    public static int frameDelta;
 
     public static void main(String[] args) {
         initDisplay();
@@ -51,12 +50,13 @@ public class Main {
         Tools.getDelta();
 
         while (!Display.isCloseRequested()) {
-            delta = Tools.getDelta();
+            frameDelta = Tools.getDelta();
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
             pollMouse();
             pollKeyboard();
             move(asteroid);
+            player.move();
 
             for (Drawable drawable : drawables) {
                 drawable.draw();
@@ -94,16 +94,16 @@ public class Main {
             if (Keyboard.getEventKeyState()) {
                 switch (Keyboard.getEventKey()) {
                     case KEY_FORWARD:
-                        ySpeed += PLAYER_SPEED;
+                        player.moveVertically(true);
                         break;
                     case KEY_BACKWARD:
-                        ySpeed -= PLAYER_SPEED;
+                        player.moveVertically(false);
                         break;
                     case KEY_LEFT:
-                        xSpeed -= PLAYER_SPEED;
+                        player.moveSideways(true);
                         break;
                     case KEY_RIGHT:
-                        xSpeed += PLAYER_SPEED;
+                        player.moveSideways(false);
                         break;
                 }
             }
@@ -111,22 +111,20 @@ public class Main {
             else {
                 switch (Keyboard.getEventKey()) {
                     case KEY_FORWARD:
-                        ySpeed -= PLAYER_SPEED;
+                        player.moveVertically(false);
                         break;
                     case KEY_BACKWARD:
-                        ySpeed += PLAYER_SPEED;
+                        player.moveVertically(true);
                         break;
                     case KEY_LEFT:
-                        xSpeed += PLAYER_SPEED;
+                        player.moveSideways(false);
                         break;
                     case KEY_RIGHT:
-                        xSpeed -= PLAYER_SPEED;
+                        player.moveSideways(true);
                         break;
                 }
             }
         }
-
-        player.translate(xSpeed * delta, ySpeed * delta);
     }
 
     private static void pollMouse() {
@@ -163,7 +161,7 @@ public class Main {
     }
 
     private static void move(Movable movable) {
-        movable.translate(asteroidXSpeed * delta, asteroidYSpeed * delta);
+        movable.translate(asteroidXSpeed * frameDelta, asteroidYSpeed * frameDelta);
         Vector2f location = movable.getLocation();
         if (location.x > 0.9f || location.x < -0.9f) {
             asteroidXSpeed *= -1;

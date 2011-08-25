@@ -15,10 +15,13 @@ public class Player extends Movable {
         1.0f, 1.0f, 1.0f,
         1.0f, 1.0f, 1.0f
     };
+    private static final float Y_SPEED = 0.001f;
+    private static final float X_SPEED = 0.001f;
     private FloatBuffer vertsBuffer;
     private FloatBuffer colorBuffer;
     private FloatBuffer modelViewBuffer;
     private boolean transformed;
+    private float currentYSpeed, currentXSpeed;
 
     public Player() {
         super();
@@ -26,6 +29,8 @@ public class Player extends Movable {
         colorBuffer = Tools.floatArrayToFloatBuffer(color);
         modelViewBuffer = Tools.floatArrayToFloatBuffer(new float[16]);
         transformed = true;
+        currentYSpeed = 0;
+        currentXSpeed = 0;
     }
 
     @Override
@@ -59,5 +64,25 @@ public class Player extends Movable {
     public void translate(float x, float y) {
         super.translate(x, y);
         transformed = true;
+    }
+
+    public void moveVertically(boolean forward) {
+        if (forward) {
+            currentYSpeed += Y_SPEED;
+        } else {
+            currentYSpeed -= Y_SPEED;
+        }
+    }
+
+    public void moveSideways(boolean left) {
+        if (left) {
+            currentXSpeed -= X_SPEED;
+        } else {
+            currentXSpeed += X_SPEED;
+        }
+    }
+
+    public void move() {
+        this.translate(currentXSpeed * Main.frameDelta, currentYSpeed * Main.frameDelta);
     }
 }
