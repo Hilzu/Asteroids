@@ -1,5 +1,4 @@
 
-import java.nio.FloatBuffer;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
@@ -17,18 +16,12 @@ public class Player extends Movable {
     };
     private static final float Y_SPEED = 0.001f;
     private static final float X_SPEED = 0.001f;
-    private FloatBuffer vertsBuffer;
-    private FloatBuffer colorBuffer;
-    private FloatBuffer modelViewBuffer;
-    private boolean transformed;
+
     private float currentYSpeed, currentXSpeed;
 
     public Player() {
-        super();
-        vertsBuffer = Tools.floatArrayToFloatBuffer(verts);
-        colorBuffer = Tools.floatArrayToFloatBuffer(color);
-        modelViewBuffer = Tools.floatArrayToFloatBuffer(new float[16]);
-        transformed = true;
+        super(verts, color);
+
         currentYSpeed = 0;
         currentXSpeed = 0;
     }
@@ -52,18 +45,6 @@ public class Player extends Movable {
         GL20.glEnableVertexAttribArray(1);
 
         GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
-    }
-
-    @Override
-    public void rotate(boolean clockwise, float radians) {
-        super.rotate(clockwise, radians);
-        transformed = true;
-    }
-
-    @Override
-    public void translate(float x, float y) {
-        super.translate(x, y);
-        transformed = true;
     }
 
     public void moveVertically(boolean forward) {

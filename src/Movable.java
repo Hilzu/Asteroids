@@ -1,4 +1,5 @@
 
+import java.nio.FloatBuffer;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -6,9 +7,21 @@ import org.lwjgl.util.vector.Vector3f;
 public abstract class Movable implements Drawable {
 
     protected Matrix4f modelViewMatrix;
+    protected FloatBuffer vertsBuffer;
+    protected FloatBuffer colorBuffer;
+    protected FloatBuffer modelViewBuffer;
+    protected boolean transformed;
 
     public Movable() {
         modelViewMatrix = new Matrix4f();
+        transformed = true;
+    }
+
+    public Movable(float[] verts, float[] color) {
+        this();
+        vertsBuffer = Tools.floatArrayToFloatBuffer(verts);
+        colorBuffer = Tools.floatArrayToFloatBuffer(color);
+        modelViewBuffer = Tools.floatArrayToFloatBuffer(new float[16]);
     }
 
     public void rotate(boolean clockwise, float radians) {
@@ -19,11 +32,13 @@ public abstract class Movable implements Drawable {
             rotateAxis = new Vector3f(0, 0, 1.0f);
         }
         modelViewMatrix.rotate(radians, rotateAxis);
+        transformed = true;
     }
 
     public void translate(float x, float y) {
         Vector2f translateVec = new Vector2f(x, y);
         modelViewMatrix.translate(translateVec);
+        transformed = true;
     }
 
     public Vector2f getDirection() {

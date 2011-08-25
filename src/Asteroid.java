@@ -1,5 +1,4 @@
 
-import java.nio.FloatBuffer;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Vector2f;
@@ -28,17 +27,9 @@ public class Asteroid extends Movable {
     };
     private static float asteroidYSpeed = 0.0010f;
     private static float asteroidXSpeed = 0.0012f;
-    private FloatBuffer vertsBuffer;
-    private FloatBuffer colorBuffer;
-    private FloatBuffer modelViewBuffer;
-    private boolean transformed;
 
     public Asteroid() {
-        super();
-        vertsBuffer = Tools.floatArrayToFloatBuffer(verts);
-        colorBuffer = Tools.floatArrayToFloatBuffer(color);
-        modelViewBuffer = Tools.floatArrayToFloatBuffer(new float[16]);
-        transformed = true;
+        super(verts, color);
     }
 
     @Override
@@ -60,18 +51,6 @@ public class Asteroid extends Movable {
         GL20.glEnableVertexAttribArray(1);
 
         GL11.glDrawArrays(GL11.GL_TRIANGLE_FAN, 0, 8);
-    }
-
-    @Override
-    public void rotate(boolean clockwise, float radians) {
-        super.rotate(clockwise, radians);
-        transformed = true;
-    }
-
-    @Override
-    public void translate(float x, float y) {
-        super.translate(x, y);
-        transformed = true;
     }
 
     @Override
