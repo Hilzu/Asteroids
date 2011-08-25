@@ -1,3 +1,4 @@
+package tool;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,9 +14,9 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.OpenGLException;
 import org.lwjgl.opengl.Util;
 
-class Tools {
+public class Tools {
 
-    static String readStringFromFile(String path) {
+    public static String readStringFromFile(String path) {
         File fileHandle = new File(path);
         BufferedReader inputReader = null;
         try {

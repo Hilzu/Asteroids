@@ -1,7 +1,12 @@
+package drawable;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Vector2f;
+
+import shader.ShaderManager;
+import shader.Shader;
+import tool.Tools;
 
 public class Player extends Movable {
 
@@ -17,7 +22,6 @@ public class Player extends Movable {
     };
     private static final float Y_SPEED = 0.001f;
     private static final float X_SPEED = 0.001f;
-
     private float currentYSpeed, currentXSpeed;
 
     public Player() {
@@ -30,7 +34,7 @@ public class Player extends Movable {
     @Override
     public void draw() {
         super.draw();
-        
+
         ShaderManager.useShader(Shader.FLAT, modelViewBuffer, colorBuffer);
 
         Tools.dataToVertexBufferObject(vertsBuffer);

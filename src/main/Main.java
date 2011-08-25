@@ -1,6 +1,8 @@
+package main;
 
 import java.util.LinkedList;
 import java.util.List;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -12,6 +14,13 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.vector.Vector2f;
 
+import shader.ShaderManager;
+import drawable.Movable;
+import drawable.Asteroid;
+import drawable.Player;
+import drawable.Drawable;
+import tool.Tools;
+
 public class Main {
 
     public static final int FPS = 60;
@@ -21,7 +30,6 @@ public class Main {
     public static final int KEY_BACKWARD = Keyboard.KEY_S;
     public static final int KEY_LEFT = Keyboard.KEY_A;
     public static final int KEY_RIGHT = Keyboard.KEY_D;
-
     private static Player player;
     private static int frameDelta;
 
@@ -110,8 +118,7 @@ public class Main {
                         player.moveSideways(false);
                         break;
                 }
-            }
-            // Key lifted event
+            } // Key lifted event
             else {
                 switch (Keyboard.getEventKey()) {
                     case KEY_FORWARD:

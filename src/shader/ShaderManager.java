@@ -1,3 +1,4 @@
+package shader;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -5,7 +6,10 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.EnumMap;
 import java.util.Map;
+
 import org.lwjgl.opengl.GL20;
+
+import tool.Tools;
 
 public class ShaderManager {
 
@@ -35,8 +39,7 @@ public class ShaderManager {
 
         switch (shaderType) {
             case FLAT:
-                int uniformLoc = GL20.glGetUniformLocation(shaderPrograms
-                        .get(shaderType), "mvpMat");
+                int uniformLoc = GL20.glGetUniformLocation(shaderPrograms.get(shaderType), "mvpMat");
                 GL20.glUniformMatrix4(uniformLoc, false, uniforms[0]);
                 break;
         }
@@ -59,8 +62,7 @@ public class ShaderManager {
         GL20.glCompileShader(shader);
 
         // Check if shader was compiled succesfully
-        IntBuffer compiled = ByteBuffer.allocateDirect(4)
-                .order(ByteOrder.nativeOrder()).asIntBuffer();
+        IntBuffer compiled = ByteBuffer.allocateDirect(4).order(ByteOrder.nativeOrder()).asIntBuffer();
         GL20.glGetShader(shader, GL20.GL_COMPILE_STATUS, compiled);
         if (compiled.get(0) == 0) {
             System.out.println("Shader compile failed!");
@@ -94,8 +96,7 @@ public class ShaderManager {
         GL20.glLinkProgram(programObject);
 
         //Check if program was linked succesfully
-        IntBuffer linked = ByteBuffer.allocateDirect(4)
-                .order(ByteOrder.nativeOrder()).asIntBuffer();
+        IntBuffer linked = ByteBuffer.allocateDirect(4).order(ByteOrder.nativeOrder()).asIntBuffer();
         GL20.glGetProgram(programObject, GL20.GL_LINK_STATUS, linked);
         if (linked.get(0) == 0) {
             System.out.println("Error linking program:");

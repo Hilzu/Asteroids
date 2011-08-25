@@ -1,7 +1,12 @@
+package drawable;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Vector2f;
+
+import shader.Shader;
+import shader.ShaderManager;
+import tool.Tools;
 
 public class Asteroid extends Movable {
 

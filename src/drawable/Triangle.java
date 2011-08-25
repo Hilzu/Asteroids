@@ -1,3 +1,4 @@
+package drawable;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -6,18 +7,19 @@ import java.nio.FloatBuffer;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
+import shader.ShaderManager;
+import shader.Shader;
+
 public class Triangle implements Drawable {
 
     private FloatBuffer verticesBuffer;
     private FloatBuffer colorBuffer;
 
     public Triangle(float[] vertices, float[] colors) {
-        verticesBuffer = ByteBuffer.allocateDirect(vertices.length * 4)
-                .order(ByteOrder.nativeOrder()).asFloatBuffer();
+        verticesBuffer = ByteBuffer.allocateDirect(vertices.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
         verticesBuffer.put(vertices).position(0);
 
-        colorBuffer = ByteBuffer.allocateDirect(colors.length * 4)
-                .order(ByteOrder.nativeOrder()).asFloatBuffer();
+        colorBuffer = ByteBuffer.allocateDirect(colors.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
         colorBuffer.put(colors).position(0);
     }
 
