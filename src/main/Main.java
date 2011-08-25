@@ -17,6 +17,7 @@ import org.lwjgl.util.vector.Vector2f;
 import shader.ShaderManager;
 import drawable.Movable;
 import drawable.Asteroid;
+import drawable.Bullet;
 import drawable.Player;
 import drawable.Drawable;
 import tool.Tools;
@@ -55,6 +56,9 @@ public class Main {
         Asteroid asteroid = new Asteroid();
         drawables.add(asteroid);
         movables.add(asteroid);
+
+        Bullet bullet = new Bullet();
+        drawables.add(bullet);
 
         // Init frame delta time so that first reading is sane.
         Tools.getDelta();
