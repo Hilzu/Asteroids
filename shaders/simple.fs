@@ -1,9 +1,8 @@
-#version 140
+#version 150
 
-smooth out vec4 vFragColor; // Fragment color to rasterize
-smooth in vec4 vVaryingColor; // Incoming color from vertex stage
+smooth in vec4 vFragColor;  // Color value passed by vertex/geometry shader
+smooth out vec4 vColor;     // Fragment color to rasterize
 
-void main(void)
-{
-    vFragColor = vVaryingColor;
+void main() {
+    vColor = vFragColor;
 }

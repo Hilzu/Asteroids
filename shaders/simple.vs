@@ -1,12 +1,11 @@
-#version 140
+#version 150
 
-in vec4 vVertex; // Vertex position attribute
-in vec4 vColor; // Vertex color attribute
+in vec4 vVertex;    // Vertex position attribute
+in vec4 vColor;     // Vertex color attribute
 
-smooth out vec4 vVaryingColor; // Color value passed to fragment shader
+smooth out vec4 vFragColor;     // Color value passed to fragment shader
 
-void main(void)
-    {
-    vVaryingColor = vColor;// Simply copy the color value
-    gl_Position = vVertex; // Simply pass along the vertex position
-    }
+void main() {
+    vFragColor = vColor;    // Copy and pass color as-is
+    gl_Position = vVertex;      // Set vertex position as is
+}

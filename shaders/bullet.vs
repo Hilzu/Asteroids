@@ -1,4 +1,4 @@
-#version 140
+#version 150
 
 in vec4 vVertex;    // Vertex position attribute
 in vec4 vColor;     // Vertex color attribute
@@ -7,9 +7,8 @@ uniform mat4 mvpMat;    // Modelview Projection matrix
 
 smooth out vec4 vFragColor;     // Color value passed to fragment shader
 
-void main(void)
-{
+void main() {
     gl_PointSize = 8.0;
-    vFragColor = vColor;     // Pass the color to fragment shader
-    gl_Position = mvpMat * vVertex;     // Transform position with mvp
+    vFragColor = vColor;    // Copy and pass color as-is
+    gl_Position = mvpMat * vVertex;     // Transform vertex using mvp
 }
