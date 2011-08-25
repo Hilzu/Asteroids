@@ -10,7 +10,7 @@ import tool.Tools;
 
 public class Asteroid extends Movable {
 
-    private static final float[] verts = {
+    private static final float[] VERTS = {
         0.0f, 0.0f, 0.0f,
         0.05f, 0.087f, 0.0f,
         -0.05f, 0.087f, 0.0f,
@@ -20,21 +20,24 @@ public class Asteroid extends Movable {
         0.1f, 0.0f, 0.0f,
         0.05f, 0.087f, 0.0f
     };
-    private static final float[] color = {
-        1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f
+    private static final float r = .2f;
+    private static final float g = .15f;
+    private static final float b = .1f;
+    private static final float[] COLORS = {
+        r, g, b,
+        r, g, b,
+        r, g, b,
+        r, g, b,
+        r, g, b,
+        r, g, b,
+        r, g, b,
+        r, g, b
     };
     private static float asteroidYSpeed = 0.0010f;
     private static float asteroidXSpeed = 0.0012f;
 
     public Asteroid() {
-        super(verts, color);
+        super(VERTS, COLORS);
     }
 
     @Override

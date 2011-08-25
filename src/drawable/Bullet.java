@@ -10,7 +10,7 @@ import tool.Tools;
 public class Bullet extends Movable {
 
     private static final float[] vert = {0, 0, 0};
-    private static final float[] color = {1, 1, 1};
+    private static final float[] color = {.98f, .04f, .7f};
 
     public Bullet() {
         super(vert, color);

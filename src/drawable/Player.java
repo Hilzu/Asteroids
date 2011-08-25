@@ -10,22 +10,26 @@ import tool.Tools;
 
 public class Player extends Movable {
 
-    private static final float[] verts = {
+    private static final float[] VERTS = {
         0.0f, 0.05f, 0.0f,
         -0.03f, -0.03f, 0.0f,
         0.03f, -0.03f, 0.0f
     };
-    private static final float[] color = {
-        1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f
+    private static final float r = 0;
+    private static final float g = .5f;
+    private static final float b = .5f;
+    private static final float[] COLORS = {
+        r, g, b,
+        r, g, b,
+        r, g, b
     };
     private static final float Y_SPEED = 0.001f;
     private static final float X_SPEED = 0.001f;
+
     private float currentYSpeed, currentXSpeed;
 
     public Player() {
-        super(verts, color);
+        super(VERTS, COLORS);
 
         currentYSpeed = 0;
         currentXSpeed = 0;
