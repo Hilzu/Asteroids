@@ -1,6 +1,7 @@
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.util.vector.Vector2f;
 
 public class Player extends Movable {
 
@@ -66,5 +67,27 @@ public class Player extends Movable {
     @Override
     public void move(int coefficient) {
         this.translate(currentXSpeed * coefficient, currentYSpeed * coefficient);
+    }
+
+    public void rotateTo(Vector2f newDirection) {
+        // Angle calculations assume player is at (0,0). Transform direction vector to match this assumption.
+        Vector2f.sub(newDirection, this.getLocation(), newDirection);
+        Vector2f playerDirection = this.getDirection();
+
+        float angle;    // Amount to rotate player in radians
+        // Direction vector is at the same position as player. Do nothing.
+        if (newDirection.x == 0 && newDirection.y == 0) {
+            return;
+        }
+
+        angle = Vector2f.angle(newDirection, playerDirection);
+
+        // Assume that angle means rotation in clockwise direction.
+        this.rotate(true, angle);
+        // If new angle after rotation is bigger, rotation should have been in counter-clockwise direction.
+        float newAngle = Vector2f.angle(newDirection, this.getDirection());
+        if (newAngle > angle) {
+            this.rotate(false, angle * 2);
+        }
     }
 }

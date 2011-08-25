@@ -23,9 +23,7 @@ public class Main {
     public static final int KEY_RIGHT = Keyboard.KEY_D;
 
     private static Player player;
-
-
-    public static int frameDelta;
+    private static int frameDelta;
 
     public static void main(String[] args) {
         initDisplay();
@@ -96,7 +94,7 @@ public class Main {
     private static void pollKeyboard() {
 
         while (Keyboard.next()) {
-            // Key down event
+            // Key pushed event
             if (Keyboard.getEventKeyState()) {
                 switch (Keyboard.getEventKey()) {
                     case KEY_FORWARD:
@@ -113,7 +111,7 @@ public class Main {
                         break;
                 }
             }
-            // Key up event
+            // Key lifted event
             else {
                 switch (Keyboard.getEventKey()) {
                     case KEY_FORWARD:
@@ -137,32 +135,13 @@ public class Main {
         float x = Mouse.getX();
         float y = Mouse.getY();
 
-        // Project screen coordinates to normal [-1.0, 1.0] coordinate space
-        x -= DISPLAY_WIDTH / 2;
+        // Project window coordinates to normal [-1.0, 1.0] coordinate space
+        x -= DISPLAY_WIDTH / 2;     // [0, 800] => [-400, 400]
         y -= DISPLAY_HEIGHT / 2;
-        x /= DISPLAY_WIDTH / 2;
+        x /= DISPLAY_WIDTH / 2;     // [-400, 400] => [-1, 1]
         y /= DISPLAY_HEIGHT / 2;
 
-
         Vector2f mouseDirection = new Vector2f(x, y);
-        // Angle calculations assume player is at (0,0). Translate mouse vector to match this assumption.
-        Vector2f.sub(mouseDirection, player.getLocation(), mouseDirection);
-        Vector2f playerDirection = player.getDirection();
-
-        float angle;    // Amount to rotate player in radians
-        // Mouse is at the exact same location as player
-        if (mouseDirection.x == 0 && mouseDirection.y == 0) {
-            return;
-        }
-
-        angle = Vector2f.angle(mouseDirection, playerDirection);
-
-        // Assume that angle means rotation in clockwise direction.
-        player.rotate(true, angle);
-        // If new angle after rotation is bigger, rotation should have been in counter-clockwise direction.
-        float newAngle = Vector2f.angle(mouseDirection, player.getDirection());
-        if (newAngle > angle) {
-            player.rotate(false, angle * 2);
-        }
+        player.rotateTo(mouseDirection);
     }
 }
