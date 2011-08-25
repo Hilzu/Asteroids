@@ -8,23 +8,16 @@ import org.lwjgl.util.vector.Vector3f;
 
 import tool.Tools;
 
-public abstract class Movable implements Drawable {
+public abstract class Movable extends Drawable {
 
     protected Matrix4f modelViewMatrix;
-    protected FloatBuffer vertsBuffer;
-    protected FloatBuffer colorBuffer;
     protected FloatBuffer modelViewBuffer;
     protected boolean transformed;
 
-    public Movable() {
+    public Movable(float[] verts, float[] colors) {
+        super(verts, colors);
         modelViewMatrix = new Matrix4f();
         transformed = true;
-    }
-
-    public Movable(float[] verts, float[] color) {
-        this();
-        vertsBuffer = Tools.floatArrayToFloatBuffer(verts);
-        colorBuffer = Tools.floatArrayToFloatBuffer(color);
         modelViewBuffer = Tools.floatArrayToFloatBuffer(new float[16]);
     }
 
