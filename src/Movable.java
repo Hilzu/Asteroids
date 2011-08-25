@@ -53,5 +53,14 @@ public abstract class Movable implements Drawable {
         this.move(1);
     }
 
+    @Override
+    public void draw() {
+        if (transformed) {
+            modelViewMatrix.store(modelViewBuffer);
+            modelViewBuffer.position(0);
+            transformed = false;
+        }
+    }
+
     public abstract void move(int coefficient);
 }

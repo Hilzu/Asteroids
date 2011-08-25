@@ -34,11 +34,8 @@ public class Asteroid extends Movable {
 
     @Override
     public void draw() {
-        if (transformed) {
-            modelViewMatrix.store(modelViewBuffer);
-            modelViewBuffer.position(0);
-            transformed = false;
-        }
+        super.draw();
+
         ShaderManager.useShader(Shader.FLAT, modelViewBuffer, colorBuffer);
 
         Tools.dataToVertexBufferObject(vertsBuffer);
