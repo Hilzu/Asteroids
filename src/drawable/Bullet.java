@@ -20,7 +20,7 @@ public class Bullet extends Movable {
     public void draw() {
         super.draw();
 
-        ShaderManager.useShader(Shader.FLAT, modelViewBuffer, colorBuffer);
+        ShaderManager.useShader(Shader.BULLET, modelViewBuffer, colorBuffer);
 
         Tools.dataToVertexBufferObject(vertsBuffer);
         GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);

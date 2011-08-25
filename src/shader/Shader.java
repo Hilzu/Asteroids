@@ -3,7 +3,9 @@ package shader;
 public enum Shader {
 
     SIMPLE("simple.vs", "simple.fs", "vVertex", "vColor"),
-    FLAT("flat.vs", "simple.fs", "vVertex", "vColor");
+    FLAT("flat.vs", "simple.fs", "vVertex", "vColor"),
+    BULLET("bullet.vs", "bullet.fs", "vVertex", "vColor");
+    
     private final String vertShaderFileName;
     private final String fragShaderFileName;
     private final String[] attributes;

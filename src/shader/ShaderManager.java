@@ -38,10 +38,16 @@ public class ShaderManager {
         GL20.glUseProgram(shaderPrograms.get(shaderType));
 
         switch (shaderType) {
-            case FLAT:
-                int uniformLoc = GL20.glGetUniformLocation(shaderPrograms.get(shaderType), "mvpMat");
+            case FLAT: {
+                int uniformLoc = GL20.glGetUniformLocation(shaderPrograms.get(Shader.FLAT), "mvpMat");
                 GL20.glUniformMatrix4(uniformLoc, false, uniforms[0]);
                 break;
+            }
+            case BULLET: {
+                int uniformLoc = GL20.glGetUniformLocation(shaderPrograms.get(Shader.BULLET), "mvpMat");
+                GL20.glUniformMatrix4(uniformLoc, false, uniforms[0]);
+                break;
+            }
         }
     }
 

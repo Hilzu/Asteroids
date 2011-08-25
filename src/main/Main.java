@@ -20,6 +20,7 @@ import drawable.Asteroid;
 import drawable.Bullet;
 import drawable.Player;
 import drawable.Drawable;
+import org.lwjgl.opengl.GL32;
 import tool.Tools;
 
 public class Main {
@@ -41,6 +42,8 @@ public class Main {
         GL30.glBindVertexArray(vao);
 
         GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        // Allows to define size of point primitive in vertex shader
+        GL11.glEnable(GL32.GL_PROGRAM_POINT_SIZE);
 
         ShaderManager.initShaders();
 
