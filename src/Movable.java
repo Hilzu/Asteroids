@@ -33,4 +33,10 @@ public abstract class Movable implements Drawable {
     public Vector2f getLocation() {
         return new Vector2f(modelViewMatrix.m30, modelViewMatrix.m31);
     }
+
+    public void move() {
+        this.move(1);
+    }
+
+    public abstract void move(int coefficient);
 }

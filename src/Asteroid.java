@@ -2,6 +2,7 @@
 import java.nio.FloatBuffer;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.util.vector.Vector2f;
 
 public class Asteroid extends Movable {
 
@@ -25,6 +26,8 @@ public class Asteroid extends Movable {
         1.0f, 1.0f, 1.0f,
         1.0f, 1.0f, 1.0f
     };
+    private static float asteroidYSpeed = 0.0010f;
+    private static float asteroidXSpeed = 0.0012f;
     private FloatBuffer vertsBuffer;
     private FloatBuffer colorBuffer;
     private FloatBuffer modelViewBuffer;
@@ -69,5 +72,17 @@ public class Asteroid extends Movable {
     public void translate(float x, float y) {
         super.translate(x, y);
         transformed = true;
+    }
+
+    @Override
+    public void move(int coefficient) {
+        this.translate(asteroidXSpeed * coefficient, asteroidYSpeed * coefficient);
+        Vector2f location = this.getLocation();
+        if (location.x > 0.9f || location.x < -0.9f) {
+            asteroidXSpeed *= -1;
+        }
+        if (location.y > 0.9f || location.y < -0.9f) {
+            asteroidYSpeed *= -1;
+        }
     }
 }

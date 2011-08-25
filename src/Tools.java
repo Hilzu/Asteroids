@@ -64,7 +64,7 @@ class Tools {
                 Util.checkGLError();
                 break;
             } catch (OpenGLException ex) {
-                System.out.println(msg);
+                System.out.print(msg + ": ");
                 System.out.println(ex.getMessage());
             }
         }

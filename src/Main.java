@@ -23,8 +23,7 @@ public class Main {
     public static final int KEY_RIGHT = Keyboard.KEY_D;
 
     private static Player player;
-    private static float asteroidYSpeed = 0.0010f;
-    private static float asteroidXSpeed = 0.0012f;
+
 
     public static int frameDelta;
 
@@ -38,26 +37,33 @@ public class Main {
 
         ShaderManager.initShaders();
 
-        Tools.checkGLErrors("init");
+        Tools.checkGLErrors("Initialization");
 
         List<Drawable> drawables = new LinkedList<Drawable>();
+        List<Movable> movables = new LinkedList<Movable>();
+
         player = new Player();
         drawables.add(player);
+        movables.add(player);
+
         Asteroid asteroid = new Asteroid();
         drawables.add(asteroid);
+        movables.add(asteroid);
 
         // Init frame delta time so that first reading is sane.
         Tools.getDelta();
 
         while (!Display.isCloseRequested()) {
             frameDelta = Tools.getDelta();
+
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
             pollMouse();
             pollKeyboard();
-            move(asteroid);
-            player.move();
 
+            for (Movable movable : movables) {
+                movable.move(frameDelta);
+            }
             for (Drawable drawable : drawables) {
                 drawable.draw();
             }
@@ -66,7 +72,7 @@ public class Main {
 
             Tools.updateFPS();
 
-            Tools.checkGLErrors("loop");
+            Tools.checkGLErrors("Main loop");
 
             Display.sync(FPS);
         }
@@ -157,17 +163,6 @@ public class Main {
         float newAngle = Vector2f.angle(mouseDirection, player.getDirection());
         if (newAngle > angle) {
             player.rotate(false, angle * 2);
-        }
-    }
-
-    private static void move(Movable movable) {
-        movable.translate(asteroidXSpeed * frameDelta, asteroidYSpeed * frameDelta);
-        Vector2f location = movable.getLocation();
-        if (location.x > 0.9f || location.x < -0.9f) {
-            asteroidXSpeed *= -1;
-        }
-        if (location.y > 0.9f || location.y < -0.9f) {
-            asteroidYSpeed *= -1;
         }
     }
 }

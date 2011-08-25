@@ -82,7 +82,8 @@ public class Player extends Movable {
         }
     }
 
-    public void move() {
-        this.translate(currentXSpeed * Main.frameDelta, currentYSpeed * Main.frameDelta);
+    @Override
+    public void move(int coefficient) {
+        this.translate(currentXSpeed * coefficient, currentYSpeed * coefficient);
     }
 }
