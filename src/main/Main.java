@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.opengl.GL32;
 
 import shader.ShaderManager;
 import drawable.Movable;
@@ -20,7 +21,6 @@ import drawable.Asteroid;
 import drawable.Bullet;
 import drawable.Player;
 import drawable.Drawable;
-import org.lwjgl.opengl.GL32;
 import tool.Tools;
 
 public class Main {
@@ -32,8 +32,13 @@ public class Main {
     public static final int KEY_BACKWARD = Keyboard.KEY_S;
     public static final int KEY_LEFT = Keyboard.KEY_A;
     public static final int KEY_RIGHT = Keyboard.KEY_D;
+    public static final int BTN_SHOOT = 0;
+
     private static Player player;
     private static int frameDelta;
+    private static List<Drawable> drawables;
+    private static List<Movable> movables;
+    private static List<Bullet> bullets;
 
     public static void main(String[] args) {
         initDisplay();
@@ -49,8 +54,9 @@ public class Main {
 
         Tools.checkGLErrors("Initialization");
 
-        List<Drawable> drawables = new LinkedList<Drawable>();
-        List<Movable> movables = new LinkedList<Movable>();
+        drawables = new LinkedList<Drawable>();
+        movables = new LinkedList<Movable>();
+        bullets = new LinkedList<Bullet>();
 
         player = new Player();
         drawables.add(player);
@@ -60,9 +66,6 @@ public class Main {
         drawables.add(asteroid);
         movables.add(asteroid);
 
-        Bullet bullet = new Bullet();
-        drawables.add(bullet);
-
         // Init frame delta time so that first reading is sane.
         Tools.getDelta();
 
@@ -71,8 +74,9 @@ public class Main {
 
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
-            pollMouse();
+            pollMouseLocation();
             pollKeyboard();
+            pollMouseButtons();
 
             for (Movable movable : movables) {
                 movable.move(frameDelta);
@@ -145,7 +149,7 @@ public class Main {
         }
     }
 
-    private static void pollMouse() {
+    private static void pollMouseLocation() {
         float x = Mouse.getX();
         float y = Mouse.getY();
 
@@ -157,5 +161,28 @@ public class Main {
 
         Vector2f mouseDirection = new Vector2f(x, y);
         player.rotateTo(mouseDirection);
+    }
+
+    private static void pollMouseButtons() {
+        while (Mouse.next()) {
+            if (Mouse.getEventButtonState()) {
+                switch (Mouse.getEventButton()) {
+                    case BTN_SHOOT: {
+                        Bullet bullet = new Bullet();
+
+                        bullet.translate(player.getLocation());
+                        bullet.rotateTo(player.getDirection());
+
+                        // Offset bullet so that it spawns at ships tip.
+                        bullet.translate(0, .04f);
+
+                        bullets.add(bullet);
+                        movables.add(bullet);
+                        drawables.add(bullet);
+                        break;
+                    }
+                }
+            }
+        }
     }
 }

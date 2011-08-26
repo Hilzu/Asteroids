@@ -32,10 +32,39 @@ public abstract class Movable extends Drawable {
         transformed = true;
     }
 
-    public void translate(float x, float y) {
-        Vector2f translateVec = new Vector2f(x, y);
+    public void rotateTo(float x, float y) {
+        this.rotateTo(new Vector2f(x, y));
+    }
+
+    public void rotateTo(Vector2f newDirection) {
+        // Angle calculations assume player is at (0,0). Transform direction vector to match this assumption.
+        Vector2f.sub(newDirection, this.getLocation(), newDirection);
+        Vector2f playerDirection = this.getDirection();
+
+        float angle;    // Amount to rotate player in radians
+        // Direction vector is at the same position as player. Do nothing.
+        if (newDirection.x == 0 && newDirection.y == 0) {
+            return;
+        }
+
+        angle = Vector2f.angle(newDirection, playerDirection);
+
+        // Assume that angle means rotation in clockwise direction.
+        this.rotate(true, angle);
+        // If new angle after rotation is bigger, rotation should have been in counter-clockwise direction.
+        float newAngle = Vector2f.angle(newDirection, this.getDirection());
+        if (newAngle > angle) {
+            this.rotate(false, angle * 2);
+        }
+    }
+
+    public void translate(Vector2f translateVec) {
         modelViewMatrix.translate(translateVec);
         transformed = true;
+    }
+
+    public void translate(float x, float y) {
+        this.translate(new Vector2f(x, y));
     }
 
     public Vector2f getDirection() {

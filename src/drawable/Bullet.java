@@ -9,11 +9,12 @@ import tool.Tools;
 
 public class Bullet extends Movable {
 
-    private static final float[] vert = {0, 0, 0};
-    private static final float[] color = {.98f, .04f, .7f};
+    private static final float[] VERT = {0, 0, 0};
+    private static final float[] COLOR = {.98f, .04f, .7f};
+    private static final float SPEED = 0.002f;
 
     public Bullet() {
-        super(vert, color);
+        super(VERT, COLOR);
     }
 
     @Override
@@ -36,6 +37,6 @@ public class Bullet extends Movable {
 
     @Override
     public void move(int coefficient) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.translate(0, SPEED * coefficient);
     }
 }
