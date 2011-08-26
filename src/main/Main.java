@@ -85,6 +85,32 @@ public class Main {
                 drawable.draw();
             }
 
+            List<Bullet> bulletsToRemove = new LinkedList<Bullet>();
+            for (Bullet bullet : bullets) {
+                Vector2f bulletLocation = bullet.getLocation();
+                if (bulletLocation.x < -1.0) {
+                    bulletsToRemove.add(bullet);
+                    continue;
+                }
+                if (bulletLocation.x > 1.0) {
+                    bulletsToRemove.add(bullet);
+                    continue;
+                }
+                if (bulletLocation.y < -1.0) {
+                    bulletsToRemove.add(bullet);
+                    continue;
+                }
+                if (bulletLocation.y > 1.0) {
+                    bulletsToRemove.add(bullet);
+                    continue;
+                }
+            }
+            for (Bullet bullet : bulletsToRemove) {
+                drawables.remove(bullet);
+                movables.remove(bullet);
+                bullets.remove(bullet);
+            }
+
             Display.update();
 
             Tools.updateFPS();
