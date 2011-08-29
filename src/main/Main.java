@@ -74,9 +74,8 @@ public class Main {
 
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
-            pollMouseLocation();
             pollKeyboard();
-            pollMouseButtons();
+            pollMouse();
 
             for (Movable movable : movables) {
                 movable.move(frameDelta);
@@ -175,21 +174,18 @@ public class Main {
         }
     }
 
-    private static void pollMouseLocation() {
+    private static void pollMouse() {
         float x = Mouse.getX();
         float y = Mouse.getY();
-
         // Project window coordinates to normal [-1.0, 1.0] coordinate space
         x -= DISPLAY_WIDTH / 2;     // [0, 800] => [-400, 400]
         y -= DISPLAY_HEIGHT / 2;
         x /= DISPLAY_WIDTH / 2;     // [-400, 400] => [-1, 1]
         y /= DISPLAY_HEIGHT / 2;
-
         Vector2f mouseDirection = new Vector2f(x, y);
+        
         player.rotateTo(mouseDirection);
-    }
 
-    private static void pollMouseButtons() {
         while (Mouse.next()) {
             if (Mouse.getEventButtonState()) {
                 switch (Mouse.getEventButton()) {
@@ -197,7 +193,7 @@ public class Main {
                         Bullet bullet = new Bullet();
 
                         bullet.translate(player.getLocation());
-                        bullet.rotateTo(player.getDirection());
+                        bullet.rotateTo(mouseDirection);
 
                         // Offset bullet so that it spawns at ships tip.
                         bullet.translate(0, .04f);

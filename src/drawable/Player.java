@@ -2,7 +2,6 @@ package drawable;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.util.vector.Vector2f;
 
 import shader.ShaderManager;
 import shader.Shader;
@@ -24,7 +23,7 @@ public class Player extends Movable {
         r, g, b
     };
     private static final float Y_SPEED = 0.001f;
-    private static final float X_SPEED = 0.001f;
+    private static final float X_SPEED = 0.0008f;
 
     private float currentYSpeed, currentXSpeed;
 

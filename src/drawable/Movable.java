@@ -37,23 +37,23 @@ public abstract class Movable extends Drawable {
     }
 
     public void rotateTo(Vector2f newDirection) {
-        // Angle calculations assume player is at (0,0). Transform direction vector to match this assumption.
-        Vector2f.sub(newDirection, this.getLocation(), newDirection);
-        Vector2f playerDirection = this.getDirection();
+        // Vectors are directions from (0, 0). Substracting location from direction transforms direction to work with objects not at (0, 0).
+        // Bind newDirection to a new Vector so that the original remains untouched.
+        newDirection = Vector2f.sub(newDirection, this.getLocation(), null);
+        Vector2f currentDirection = this.getDirection();
 
-        float angle;    // Amount to rotate player in radians
-        // Direction vector is at the same position as player. Do nothing.
+        // Direction vector is the same as current location.
         if (newDirection.x == 0 && newDirection.y == 0) {
             return;
         }
-
-        angle = Vector2f.angle(newDirection, playerDirection);
+        // Amount to rotate This in radians
+        float angle = Vector2f.angle(newDirection, currentDirection);
 
         // Assume that angle means rotation in clockwise direction.
         this.rotate(true, angle);
         // If new angle after rotation is not close to zero, rotation should have been in counter-clockwise direction.
         float newAngle = Vector2f.angle(newDirection, this.getDirection());
-        if (newAngle > 0.01f) {
+        if (newAngle > 0.05f) {
             this.rotate(false, angle * 2);
         }
     }
