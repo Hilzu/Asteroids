@@ -33,12 +33,11 @@ public class Main {
     public static final int KEY_LEFT = Keyboard.KEY_A;
     public static final int KEY_RIGHT = Keyboard.KEY_D;
     public static final int BTN_SHOOT = 0;
-
     private static Player player;
     private static int frameDelta;
-    private static List<Drawable> drawables;
-    private static List<Movable> movables;
-    private static List<Bullet> bullets;
+    private static Bullets bullets;
+    protected static List<Drawable> drawables;
+    protected static List<Movable> movables;
 
     public static void main(String[] args) {
         initDisplay();
@@ -56,7 +55,7 @@ public class Main {
 
         drawables = new LinkedList<Drawable>();
         movables = new LinkedList<Movable>();
-        bullets = new LinkedList<Bullet>();
+        bullets = new Bullets();
 
         player = new Player();
         drawables.add(player);
@@ -83,32 +82,7 @@ public class Main {
             for (Drawable drawable : drawables) {
                 drawable.draw();
             }
-
-            List<Bullet> bulletsToRemove = new LinkedList<Bullet>();
-            for (Bullet bullet : bullets) { // TODO: Move to new Bullets class
-                Vector2f bulletLocation = bullet.getLocation();
-                if (bulletLocation.x < -1.0) {
-                    bulletsToRemove.add(bullet);
-                    continue;
-                }
-                if (bulletLocation.x > 1.0) {
-                    bulletsToRemove.add(bullet);
-                    continue;
-                }
-                if (bulletLocation.y < -1.0) {
-                    bulletsToRemove.add(bullet);
-                    continue;
-                }
-                if (bulletLocation.y > 1.0) {
-                    bulletsToRemove.add(bullet);
-                    continue;
-                }
-            }
-            for (Bullet bullet : bulletsToRemove) {
-                drawables.remove(bullet);
-                movables.remove(bullet);
-                bullets.remove(bullet);
-            }
+            bullets.removeOutOfViewBullets();
 
             Display.update();
 
@@ -183,24 +157,14 @@ public class Main {
         x /= DISPLAY_WIDTH / 2;     // [-400, 400] => [-1, 1]
         y /= DISPLAY_HEIGHT / 2;
         Vector2f mouseDirection = new Vector2f(x, y);
-        
+
         player.rotateTo(mouseDirection);
 
         while (Mouse.next()) {
             if (Mouse.getEventButtonState()) {
                 switch (Mouse.getEventButton()) {
-                    case BTN_SHOOT: {   // Move to new Bullets class
-                        Bullet bullet = new Bullet();
-
-                        bullet.translate(player.getLocation());
-                        bullet.rotateTo(mouseDirection);
-
-                        // Offset bullet so that it spawns at ships tip.
-                        bullet.translate(0, .04f);
-
-                        bullets.add(bullet);
-                        movables.add(bullet);
-                        drawables.add(bullet);
+                    case BTN_SHOOT: {
+                        bullets.newBullet(player.getLocation(), mouseDirection);
                         break;
                     }
                 }
