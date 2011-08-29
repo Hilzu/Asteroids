@@ -2,8 +2,11 @@ package drawable;
 
 import java.nio.FloatBuffer;
 
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
+
 import tool.Tools;
-// TODO: Make constructor that takes used shader and primitive as arguments.
+
 public abstract class Drawable {
 
     protected FloatBuffer vertsBuffer;
@@ -14,5 +17,14 @@ public abstract class Drawable {
         colorBuffer = Tools.floatArrayToFloatBuffer(colors);
     }
 
-    public abstract void draw();    // TODO: Move basic drawing logic here.
+    public void draw() {
+        Tools.dataToVertexBufferObject(vertsBuffer);
+        GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);
+
+        Tools.dataToVertexBufferObject(colorBuffer);
+        GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 0, 0);
+
+        GL20.glEnableVertexAttribArray(0);
+        GL20.glEnableVertexAttribArray(1);
+    }    
 }

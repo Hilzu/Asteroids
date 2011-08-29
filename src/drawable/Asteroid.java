@@ -1,12 +1,10 @@
 package drawable;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Vector2f;
 
 import shader.Shader;
 import shader.ShaderManager;
-import tool.Tools;
 
 public class Asteroid extends Movable {
 
@@ -45,15 +43,6 @@ public class Asteroid extends Movable {
         super.draw();
 
         ShaderManager.useShader(Shader.FLAT, modelViewBuffer, colorBuffer);
-
-        Tools.dataToVertexBufferObject(vertsBuffer);
-        GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);
-
-        Tools.dataToVertexBufferObject(colorBuffer);
-        GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 0, 0);
-
-        GL20.glEnableVertexAttribArray(0);
-        GL20.glEnableVertexAttribArray(1);
 
         GL11.glDrawArrays(GL11.GL_TRIANGLE_FAN, 0, 8);
     }

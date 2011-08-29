@@ -96,6 +96,7 @@ public abstract class Movable extends Drawable {
             modelViewBuffer.position(0);
             transformed = false;
         }
+        super.draw();
     }
 
     public abstract void move(int coefficient);
