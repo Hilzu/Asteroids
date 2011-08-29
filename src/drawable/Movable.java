@@ -66,6 +66,16 @@ public abstract class Movable extends Drawable {
     public void translate(float x, float y) {
         this.translate(new Vector2f(x, y));
     }
+    
+    public void moveTo(Vector2f location) {
+        this.moveTo(location.x, location.y);
+    }
+    
+    public void moveTo(float x, float y) {
+        modelViewMatrix.m30 = x;
+        modelViewMatrix.m31 = y;
+        transformed = true;
+    }
 
     public Vector2f getDirection() {
         return new Vector2f(modelViewMatrix.m10, modelViewMatrix.m11);
