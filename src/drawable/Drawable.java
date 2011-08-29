@@ -3,7 +3,7 @@ package drawable;
 import java.nio.FloatBuffer;
 
 import tool.Tools;
-
+// TODO: Make constructor that takes used shader and primitive as arguments.
 public abstract class Drawable {
 
     protected FloatBuffer vertsBuffer;
@@ -14,5 +14,5 @@ public abstract class Drawable {
         colorBuffer = Tools.floatArrayToFloatBuffer(colors);
     }
 
-    public abstract void draw();
+    public abstract void draw();    // TODO: Move basic drawing logic here.
 }

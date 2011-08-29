@@ -51,9 +51,9 @@ public abstract class Movable extends Drawable {
 
         // Assume that angle means rotation in clockwise direction.
         this.rotate(true, angle);
-        // If new angle after rotation is bigger, rotation should have been in counter-clockwise direction.
+        // If new angle after rotation is not close to zero, rotation should have been in counter-clockwise direction.
         float newAngle = Vector2f.angle(newDirection, this.getDirection());
-        if (newAngle > angle) {
+        if (newAngle > 0.01f) {
             this.rotate(false, angle * 2);
         }
     }

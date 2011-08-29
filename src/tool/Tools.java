@@ -72,7 +72,7 @@ public class Tools {
         }
     }
 
-    public static void dataToVertexBufferObject(FloatBuffer data) {
+    public static void dataToVertexBufferObject(FloatBuffer data) { // TODO: a new buffer probably isn't needed for each draw
         int buffer = GL15.glGenBuffers();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, buffer);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, data, GL15.GL_STATIC_DRAW);

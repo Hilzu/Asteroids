@@ -59,7 +59,7 @@ public class Asteroid extends Movable {
     }
 
     @Override
-    public void move(int coefficient) {
+    public void move(int coefficient) { // FIXME: Asteroid sometimes get stuck at borders
         this.translate(asteroidXSpeed * coefficient, asteroidYSpeed * coefficient);
         Vector2f location = this.getLocation();
         if (location.x > 0.9f || location.x < -0.9f) {

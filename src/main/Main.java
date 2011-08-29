@@ -86,7 +86,7 @@ public class Main {
             }
 
             List<Bullet> bulletsToRemove = new LinkedList<Bullet>();
-            for (Bullet bullet : bullets) {
+            for (Bullet bullet : bullets) { // TODO: Move to new Bullets class
                 Vector2f bulletLocation = bullet.getLocation();
                 if (bulletLocation.x < -1.0) {
                     bulletsToRemove.add(bullet);
@@ -193,7 +193,7 @@ public class Main {
         while (Mouse.next()) {
             if (Mouse.getEventButtonState()) {
                 switch (Mouse.getEventButton()) {
-                    case BTN_SHOOT: {
+                    case BTN_SHOOT: {   // Move to new Bullets class
                         Bullet bullet = new Bullet();
 
                         bullet.translate(player.getLocation());
