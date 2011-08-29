@@ -4,7 +4,7 @@ public enum Shader {
 
     SIMPLE("simple.vs", "simple.fs", "vVertex", "vColor"),
     FLAT("flat.vs", "simple.fs", "vVertex", "vColor"),
-    BULLET("bullet.vs", "bullet.fs", "vVertex", "vColor"); // TODO: Read color from uniform, not argument
+    BULLET("bullet.vs", "bullet.fs", "vVertex", "vColor");
     
     private final String vertShaderFileName;
     private final String fragShaderFileName;

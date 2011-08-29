@@ -14,7 +14,7 @@ public abstract class Drawable {
     private int vertBufferPointer;
     private int colorBufferPointer;
 
-    public Drawable(float[] verts, float[] colors) {
+    public Drawable(float[] verts, float[] colors) {    // TODO: Make this more generic
         vertsBuffer = Tools.floatArrayToFloatBuffer(verts);
         colorBuffer = Tools.floatArrayToFloatBuffer(colors);
         vertBufferPointer = Tools.createVBOBuffer();
