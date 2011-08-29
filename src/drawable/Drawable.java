@@ -30,5 +30,13 @@ public abstract class Drawable {
 
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);
-    }    
+    }
+
+    public int getVertBufferPointer() {
+        return vertBufferPointer;
+    }
+
+    public int getColorBufferPointer() {
+        return colorBufferPointer;
+    }
 }

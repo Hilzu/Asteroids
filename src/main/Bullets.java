@@ -3,6 +3,7 @@ package main;
 import drawable.Bullet;
 import java.util.LinkedList;
 import java.util.List;
+import org.lwjgl.opengl.GL15;
 import org.lwjgl.util.vector.Vector2f;
 
 public class Bullets {
@@ -50,6 +51,8 @@ public class Bullets {
             }
         }
         for (Bullet bullet : bulletsToRemove) {
+            GL15.glDeleteBuffers(bullet.getVertBufferPointer());
+            GL15.glDeleteBuffers(bullet.getColorBufferPointer());
             Main.drawables.remove(bullet);
             Main.movables.remove(bullet);
             bullets.remove(bullet);
