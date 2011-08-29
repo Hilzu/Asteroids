@@ -1,5 +1,6 @@
 package tool;
 
+import drawable.Movable;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,6 +15,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.OpenGLException;
 import org.lwjgl.opengl.Util;
+import org.lwjgl.util.vector.Vector2f;
 
 public class Tools {
 
@@ -117,5 +119,16 @@ public class Tools {
             lastFPS += 1000; //add one second
         }
         fps++;
+    }
+    
+    public static boolean checkCollision(Movable a, Movable b) {
+        Vector2f aLoc = a.getLocation();
+        Vector2f bLoc = b.getLocation();
+        if (Math.abs(aLoc.x - bLoc.x) < 0.1f) {
+            if (Math.abs(aLoc.y - bLoc.y) < 0.1f) {
+                return true;
+            }
+        }
+        return false;
     }
 }

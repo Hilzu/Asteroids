@@ -21,6 +21,7 @@ import drawable.Asteroid;
 import drawable.Bullet;
 import drawable.Player;
 import drawable.Drawable;
+import drawable.Square;
 import tool.Tools;
 
 public class Main {
@@ -78,6 +79,12 @@ public class Main {
 
             for (Movable movable : movables) {
                 movable.move(frameDelta);
+                if (movable.equals(player)) {
+                    continue;
+                }
+                if (Tools.checkCollision(player, movable)) {
+                    System.out.println("Collision! " + movable);
+                }
             }
             for (Drawable drawable : drawables) {
                 drawable.draw();

@@ -27,7 +27,7 @@ public class Player extends Movable {
 
     public Player() {
         super(VERTS, COLORS);
-
+        collisionBoxH = 0.06f;
         currentYSpeed = 0;
         currentXSpeed = 0;
     }

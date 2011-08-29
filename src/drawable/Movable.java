@@ -13,6 +13,7 @@ public abstract class Movable extends Drawable {
     protected Matrix4f modelViewMatrix;
     protected FloatBuffer modelViewBuffer;
     protected boolean transformed;
+    protected float collisionBoxH;
 
     public Movable(float[] verts, float[] colors) {
         super(verts, colors);
@@ -66,11 +67,11 @@ public abstract class Movable extends Drawable {
     public void translate(float x, float y) {
         this.translate(new Vector2f(x, y));
     }
-    
+
     public void moveTo(Vector2f location) {
         this.moveTo(location.x, location.y);
     }
-    
+
     public void moveTo(float x, float y) {
         modelViewMatrix.m30 = x;
         modelViewMatrix.m31 = y;
@@ -100,4 +101,10 @@ public abstract class Movable extends Drawable {
     }
 
     public abstract void move(int coefficient);
+
+    public float getCollisionBoxRadius() {
+        return collisionBoxH;
+    }
+    
+    
 }

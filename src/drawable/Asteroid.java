@@ -60,4 +60,10 @@ public class Asteroid extends Movable {
             asteroidYSpeed *= -1;
         }
     }
+
+    @Override
+    public String toString() {
+        Vector2f location = this.getLocation();
+        return String.format("Asteroid (%f, %f)", location.getX(), location.getY());
+    }  
 }
