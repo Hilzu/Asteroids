@@ -14,8 +14,8 @@ public class Bullet extends Movable {
 
     public Bullet() {
         super(VERT, COLOR);
-        collisionBoxX = 0.01f;
-        collisionBoxY = 0.01f;
+        boundingBoxX = 0.01f;
+        boundingBoxY = 0.01f;
     }
 
     @Override

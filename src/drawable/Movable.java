@@ -1,6 +1,5 @@
 package drawable;
 
-import com.sun.org.apache.bcel.internal.generic.ACONST_NULL;
 import java.nio.FloatBuffer;
 
 import org.lwjgl.util.vector.Matrix4f;
@@ -17,11 +16,11 @@ public abstract class Movable extends Drawable {
     /**
      * Distance from center to bounding box sides.
      */
-    protected float collisionBoxX;
+    protected float boundingBoxX;
     /**
      * Distance from center to bounding box top and bottom.
      */
-    protected float collisionBoxY;
+    protected float boundingBoxY;
 
     public Movable(float[] verts, float[] colors) {
         super(verts, colors);
@@ -111,31 +110,31 @@ public abstract class Movable extends Drawable {
     public abstract void move(int coefficient);
 
     public float getCollisionBoxX() {
-        return collisionBoxX;
+        return boundingBoxX;
     }
 
     public float getCollisionBoxY() {
-        return collisionBoxY;
+        return boundingBoxY;
     }
-    
+
     public boolean isColliding(Movable m) {
         return isColliding(this, m);
     }
-    
+
     public static boolean isColliding(Movable a, Movable b) {
         Vector2f aLoc = a.getLocation();
         Vector2f bLoc = b.getLocation();
-        
-        float aXMin = aLoc.x - a.collisionBoxX;
-        float aXMax = aLoc.x + a.collisionBoxX;
-        float aYMin = aLoc.y - a.collisionBoxY;
-        float aYMax = aLoc.y + a.collisionBoxY;
-        
-        float bXMin = bLoc.x - b.collisionBoxX;
-        float bXMax = bLoc.x + b.collisionBoxX;
-        float bYMin = bLoc.y - b.collisionBoxY;
-        float bYMax = bLoc.y + b.collisionBoxY;
-        
+
+        float aXMin = aLoc.x - a.boundingBoxX;
+        float aXMax = aLoc.x + a.boundingBoxX;
+        float aYMin = aLoc.y - a.boundingBoxY;
+        float aYMax = aLoc.y + a.boundingBoxY;
+
+        float bXMin = bLoc.x - b.boundingBoxX;
+        float bXMax = bLoc.x + b.boundingBoxX;
+        float bYMin = bLoc.y - b.boundingBoxY;
+        float bYMax = bLoc.y + b.boundingBoxY;
+
         float[] verts = {
             aXMin, aYMin, 0,
             aXMin, aYMax, 0,
@@ -150,26 +149,20 @@ public abstract class Movable extends Drawable {
         };
         Square box = new Square(verts, color);
         box.draw();
-        
+
         float[] verts2 = {
             bXMin, bYMin, 0,
             bXMin, bYMax, 0,
             bXMax, bYMax, 0,
             bXMax, bYMin, 0
         };
-        float[] color2 = {
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1
-        };
-        box = new Square(verts2, color2);
+        box = new Square(verts2, color);
         box.draw();
-        
+
         if (aXMin > bXMax || aXMax < bXMin || aYMin > bYMax || aYMax < bYMin) {
             return false;
-        } 
-        
+        }
+
         return true;
     }
 }

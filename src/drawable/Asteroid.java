@@ -36,8 +36,8 @@ public class Asteroid extends Movable {
 
     public Asteroid() {
         super(VERTS, COLORS);
-        collisionBoxX = 0.1f;
-        collisionBoxY = 0.087f;
+        boundingBoxX = 0.1f;
+        boundingBoxY = 0.087f;
     }
 
     @Override
@@ -67,5 +67,5 @@ public class Asteroid extends Movable {
     public String toString() {
         Vector2f location = this.getLocation();
         return String.format("Asteroid (%f, %f)", location.getX(), location.getY());
-    }  
+    }
 }
