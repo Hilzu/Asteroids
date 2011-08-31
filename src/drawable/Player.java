@@ -9,8 +9,8 @@ public class Player extends Movable {
 
     private static final float[] VERTS = {
         0.0f, 0.05f, 0.0f,
-        -0.03f, -0.03f, 0.0f,
-        0.03f, -0.03f, 0.0f
+        -0.03f, -0.05f, 0.0f,
+        0.03f, -0.05f, 0.0f
     };
     private static final float r = 0;
     private static final float g = .5f;
@@ -27,7 +27,8 @@ public class Player extends Movable {
 
     public Player() {
         super(VERTS, COLORS);
-        collisionBoxH = 0.06f;
+        collisionBoxX = 0.03f;
+        collisionBoxY = 0.05f;
         currentYSpeed = 0;
         currentXSpeed = 0;
     }

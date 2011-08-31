@@ -1,5 +1,6 @@
 package drawable;
 
+import com.sun.org.apache.bcel.internal.generic.ACONST_NULL;
 import java.nio.FloatBuffer;
 
 import org.lwjgl.util.vector.Matrix4f;
@@ -13,7 +14,14 @@ public abstract class Movable extends Drawable {
     protected Matrix4f modelViewMatrix;
     protected FloatBuffer modelViewBuffer;
     protected boolean transformed;
-    protected float collisionBoxH;
+    /**
+     * Distance from center to bounding box sides.
+     */
+    protected float collisionBoxX;
+    /**
+     * Distance from center to bounding box top and bottom.
+     */
+    protected float collisionBoxY;
 
     public Movable(float[] verts, float[] colors) {
         super(verts, colors);
@@ -102,9 +110,66 @@ public abstract class Movable extends Drawable {
 
     public abstract void move(int coefficient);
 
-    public float getCollisionBoxRadius() {
-        return collisionBoxH;
+    public float getCollisionBoxX() {
+        return collisionBoxX;
+    }
+
+    public float getCollisionBoxY() {
+        return collisionBoxY;
     }
     
+    public boolean isColliding(Movable m) {
+        return isColliding(this, m);
+    }
     
+    public static boolean isColliding(Movable a, Movable b) {
+        Vector2f aLoc = a.getLocation();
+        Vector2f bLoc = b.getLocation();
+        
+        float aXMin = aLoc.x - a.collisionBoxX;
+        float aXMax = aLoc.x + a.collisionBoxX;
+        float aYMin = aLoc.y - a.collisionBoxY;
+        float aYMax = aLoc.y + a.collisionBoxY;
+        
+        float bXMin = bLoc.x - b.collisionBoxX;
+        float bXMax = bLoc.x + b.collisionBoxX;
+        float bYMin = bLoc.y - b.collisionBoxY;
+        float bYMax = bLoc.y + b.collisionBoxY;
+        
+        float[] verts = {
+            aXMin, aYMin, 0,
+            aXMin, aYMax, 0,
+            aXMax, aYMax, 0,
+            aXMax, aYMin, 0
+        };
+        float[] color = {
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1
+        };
+        Square box = new Square(verts, color);
+        box.draw();
+        
+        float[] verts2 = {
+            bXMin, bYMin, 0,
+            bXMin, bYMax, 0,
+            bXMax, bYMax, 0,
+            bXMax, bYMin, 0
+        };
+        float[] color2 = {
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1
+        };
+        box = new Square(verts2, color2);
+        box.draw();
+        
+        if (aXMin > bXMax || aXMax < bXMin || aYMin > bYMax || aYMax < bYMin) {
+            return false;
+        } 
+        
+        return true;
+    }
 }

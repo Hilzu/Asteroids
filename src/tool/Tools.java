@@ -120,15 +120,4 @@ public class Tools {
         }
         fps++;
     }
-    
-    public static boolean checkCollision(Movable a, Movable b) {
-        Vector2f aLoc = a.getLocation();
-        Vector2f bLoc = b.getLocation();
-        if (Math.abs(aLoc.x - bLoc.x) < 0.1f) {
-            if (Math.abs(aLoc.y - bLoc.y) < 0.1f) {
-                return true;
-            }
-        }
-        return false;
-    }
 }

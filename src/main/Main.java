@@ -82,7 +82,7 @@ public class Main {
                 if (movable.equals(player)) {
                     continue;
                 }
-                if (Tools.checkCollision(player, movable)) {
+                if (player.isColliding(movable)) {
                     System.out.println("Collision! " + movable);
                 }
             }
