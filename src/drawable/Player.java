@@ -38,10 +38,10 @@ public class Player extends Movable {
     @Override
     public void draw() {
         super.draw();
+
         calculateBoundingBox();
 
         ShaderManager.useShader(Shader.FLAT, modelViewBuffer);
-
         GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
     }
 
@@ -50,13 +50,16 @@ public class Player extends Movable {
         Vector4f vertex2 = new Vector4f(VERTS[3], VERTS[4], VERTS[5], 1);
         Vector4f vertex3 = new Vector4f(VERTS[6], VERTS[7], VERTS[8], 1);
         Vector4f position = new Vector4f(modelViewMatrix.m30, modelViewMatrix.m31, modelViewMatrix.m32, modelViewMatrix.m33);
+
         Matrix4f.transform(modelViewMatrix, vertex1, vertex1);
         Matrix4f.transform(modelViewMatrix, vertex2, vertex2);
         Matrix4f.transform(modelViewMatrix, vertex3, vertex3);
+
         float minX = Math.min(Math.min(vertex1.x, vertex2.x), vertex3.x) - position.x;
         float minY = Math.min(Math.min(vertex1.y, vertex2.y), vertex3.y) - position.y;
         float maxX = Math.max(Math.max(vertex1.x, vertex2.x), vertex3.x) - position.x;
         float maxY = Math.max(Math.max(vertex1.y, vertex2.y), vertex3.y) - position.y;
+        
         boundingBoxX = Math.max(Math.abs(minX), Math.abs(maxX));
         boundingBoxY = Math.max(Math.abs(minY), Math.abs(maxY));
     }

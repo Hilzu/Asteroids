@@ -18,10 +18,8 @@ import org.lwjgl.opengl.GL32;
 import shader.ShaderManager;
 import drawable.Movable;
 import drawable.Asteroid;
-import drawable.Bullet;
 import drawable.Player;
 import drawable.Drawable;
-import drawable.Square;
 import tool.Tools;
 
 public class Main {
