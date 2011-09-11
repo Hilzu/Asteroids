@@ -27,12 +27,14 @@ public class Player extends Movable {
     private static final float X_SPEED = 0.0008f;
 
     private float currentYSpeed, currentXSpeed;
+    private int hitsAmount;
 
     public Player() {
         super(VERTS, COLORS);
         calculateBoundingBox();
         currentYSpeed = 0;
         currentXSpeed = 0;
+        hitsAmount = 0;
     }
 
     @Override
@@ -83,5 +85,11 @@ public class Player extends Movable {
     @Override
     public void move(int coefficient) {
         this.translate(currentXSpeed * coefficient, currentYSpeed * coefficient);
+    }
+
+    public void hit() {
+        this.moveTo(0, 0);
+        hitsAmount++;
+        System.out.println("Got hit! Hits: " + hitsAmount);
     }
 }

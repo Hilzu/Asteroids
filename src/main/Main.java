@@ -1,7 +1,5 @@
 package main;
 
-import java.util.LinkedList;
-import java.util.List;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
@@ -16,10 +14,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.opengl.GL32;
 
 import shader.ShaderManager;
-import drawable.Movable;
-import drawable.Asteroid;
 import drawable.Player;
-import drawable.Drawable;
 import tool.Tools;
 
 public class Main {
@@ -50,7 +45,7 @@ public class Main {
         ShaderManager.initShaders();
 
         Tools.checkGLErrors("Initialization");
-        
+
         bullets = new Bullets();
         asteroids = new Asteroids();
 
@@ -71,7 +66,7 @@ public class Main {
 
             player.move(frameDelta);
             player.draw();
-            
+
             bullets.update();
             asteroids.update();
 
@@ -165,5 +160,9 @@ public class Main {
 
     public static int getFrameDelta() {
         return frameDelta;
+    }
+
+    public static Player getPlayer() {
+        return player;
     }
 }

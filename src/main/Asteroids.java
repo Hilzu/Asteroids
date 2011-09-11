@@ -10,6 +10,7 @@ public class Asteroids {
     
     private static List<Asteroid> asteroids = new LinkedList<Asteroid>();
     private static List<Asteroid> destroyQueue = new LinkedList<Asteroid>();
+    private static int amountDestroyed = 0;
 
     public void newAsteroid() {
         Asteroid asteroid = new Asteroid();
@@ -34,10 +35,15 @@ public class Asteroids {
         for (Asteroid asteroid : asteroids) {
             asteroid.move(Main.getFrameDelta());
             asteroid.draw();
+            if (asteroid.isColliding(Main.getPlayer())) {
+                Main.getPlayer().hit();
+            }
         }
     }
 
     public void destroyAsteroid(Asteroid asteroid) {
         destroyQueue.add(asteroid);
+        amountDestroyed++;
+        System.out.println("Asteroid destroyed! Amount destroyed: " + amountDestroyed);
     }
 }
