@@ -35,8 +35,7 @@ public class Main {
     private static Player player;
     private static int frameDelta;
     private static Bullets bullets;
-    protected static List<Drawable> drawables;
-    protected static List<Movable> movables;
+    private static Asteroids asteroids;
 
     public static void main(String[] args) {
         initDisplay();
@@ -51,18 +50,13 @@ public class Main {
         ShaderManager.initShaders();
 
         Tools.checkGLErrors("Initialization");
-
-        drawables = new LinkedList<Drawable>();
-        movables = new LinkedList<Movable>();
+        
         bullets = new Bullets();
+        asteroids = new Asteroids();
 
         player = new Player();
-        drawables.add(player);
-        movables.add(player);
 
-        Asteroid asteroid = new Asteroid();
-        drawables.add(asteroid);
-        movables.add(asteroid);
+        asteroids.newAsteroid();
 
         // Init frame delta time so that first reading is sane.
         Tools.getDelta();
@@ -75,19 +69,11 @@ public class Main {
             pollKeyboard();
             pollMouse();
 
-            for (Movable movable : movables) {
-                movable.move(frameDelta);
-                if (movable.equals(player)) {
-                    continue;
-                }
-                if (player.isColliding(movable)) {
-                    System.out.println("Collision! " + movable);
-                }
-            }
-            for (Drawable drawable : drawables) {
-                drawable.draw();
-            }
-            bullets.removeOutOfViewBullets();
+            player.move(frameDelta);
+            player.draw();
+            
+            bullets.update();
+            asteroids.update();
 
             Display.update();
 
@@ -175,5 +161,9 @@ public class Main {
                 }
             }
         }
+    }
+
+    public static int getFrameDelta() {
+        return frameDelta;
     }
 }

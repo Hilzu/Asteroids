@@ -135,29 +135,29 @@ public abstract class Movable extends Drawable {
         float bYMin = bLoc.y - b.boundingBoxY;
         float bYMax = bLoc.y + b.boundingBoxY;
 
-        float[] verts = {
-            aXMin, aYMin, 0,
-            aXMin, aYMax, 0,
-            aXMax, aYMax, 0,
-            aXMax, aYMin, 0
-        };
-        float[] color = {
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1
-        };
-        Square box = new Square(verts, color);
-        box.draw();
-
-        float[] verts2 = {
-            bXMin, bYMin, 0,
-            bXMin, bYMax, 0,
-            bXMax, bYMax, 0,
-            bXMax, bYMin, 0
-        };
-        box = new Square(verts2, color);
-        box.draw();
+//        float[] verts = {
+//            aXMin, aYMin, 0,
+//            aXMin, aYMax, 0,
+//            aXMax, aYMax, 0,
+//            aXMax, aYMin, 0
+//        };
+//        float[] color = {
+//            1, 1, 1,
+//            1, 1, 1,
+//            1, 1, 1,
+//            1, 1, 1
+//        };
+//        Square box = new Square(verts, color);
+//        box.draw();
+//
+//        float[] verts2 = {
+//            bXMin, bYMin, 0,
+//            bXMin, bYMax, 0,
+//            bXMax, bYMax, 0,
+//            bXMax, bYMin, 0
+//        };
+//        box = new Square(verts2, color);
+//        box.draw();
 
         if (aXMin > bXMax || aXMax < bXMin || aYMin > bYMax || aYMax < bYMin) {
             return false;
