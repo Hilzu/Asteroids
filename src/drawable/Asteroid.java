@@ -31,8 +31,8 @@ public class Asteroid extends Movable {
         r, g, b,
         r, g, b
     };
-    private static float asteroidYSpeed = 0.0010f * 0.5f;
-    private static float asteroidXSpeed = 0.0012f * 0.5f;
+    private float asteroidYSpeed = 0.0010f * 0.5f;
+    private float asteroidXSpeed = 0.0012f * 0.5f;
 
     public Asteroid() {
         super(VERTS, COLORS);

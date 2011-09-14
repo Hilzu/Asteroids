@@ -30,6 +30,7 @@ public class Asteroids {
             GL15.glDeleteBuffers(asteroid.getColorBufferPointer());
             asteroids.remove(asteroid);
             newAsteroid();
+            newAsteroid();
         }
         destroyQueue.clear();
         for (Asteroid asteroid : asteroids) {
