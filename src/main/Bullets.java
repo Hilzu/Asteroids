@@ -65,8 +65,7 @@ public class Bullets {
     public void update() {
         this.markOutOfViewBullets();
         for (Bullet bullet : destroyQueue) {
-            GL15.glDeleteBuffers(bullet.getVertBufferPointer());
-            GL15.glDeleteBuffers(bullet.getColorBufferPointer());
+            bullet.delete();
             bullets.remove(bullet);
         }
         destroyQueue.clear();

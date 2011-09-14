@@ -3,6 +3,7 @@ package drawable;
 import java.nio.FloatBuffer;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 
 import tool.Tools;
@@ -38,5 +39,10 @@ public abstract class Drawable {
 
     public int getColorBufferPointer() {
         return colorBufferPointer;
+    }
+    
+    public void delete() {
+        GL15.glDeleteBuffers(vertBufferPointer);
+        GL15.glDeleteBuffers(colorBufferPointer);
     }
 }
