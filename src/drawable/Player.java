@@ -32,12 +32,13 @@ public class Player extends Movable {
     public static final int KEY_LEFT = Keyboard.KEY_A;
     public static final int KEY_RIGHT = Keyboard.KEY_D;
     public static final int BTN_SHOOT = 0;
-    
     private static final float Y_SPEED = 0.001f;
     private static final float X_SPEED = 0.0008f;
-    
+    private boolean forwardThrust;
+    private boolean backwardThrust;
+    private boolean leftThrust;
+    private boolean rightThrust;
     private static Bullets bullets = new Bullets();
-
     private float currentYSpeed, currentXSpeed;
     private int hitsAmount;
 
@@ -47,6 +48,10 @@ public class Player extends Movable {
         currentYSpeed = 0;
         currentXSpeed = 0;
         hitsAmount = 0;
+        forwardThrust = false;
+        backwardThrust = false;
+        leftThrust = false;
+        rightThrust = false;
     }
 
     @Override
@@ -73,29 +78,48 @@ public class Player extends Movable {
         float minY = Math.min(Math.min(vertex1.y, vertex2.y), vertex3.y) - position.y;
         float maxX = Math.max(Math.max(vertex1.x, vertex2.x), vertex3.x) - position.x;
         float maxY = Math.max(Math.max(vertex1.y, vertex2.y), vertex3.y) - position.y;
-        
+
         boundingBoxX = Math.max(Math.abs(minX), Math.abs(maxX));
         boundingBoxY = Math.max(Math.abs(minY), Math.abs(maxY));
     }
 
-    public void moveVertically(boolean forward) {
-        if (forward) {
-            currentYSpeed += Y_SPEED;
-        } else {
-            currentYSpeed -= Y_SPEED;
-        }
-    }
-
-    public void moveSideways(boolean left) {
-        if (left) {
-            currentXSpeed -= X_SPEED;
-        } else {
-            currentXSpeed += X_SPEED;
-        }
-    }
-
     @Override
     public void move(int coefficient) {
+        float accel = 0.000005f;
+        float ySpeedLimit = 0.001f;
+        float xSpeedLimit = 0.001f;
+        if (forwardThrust) {
+            currentYSpeed += accel * coefficient;
+            if (currentYSpeed > ySpeedLimit) {
+                currentYSpeed = ySpeedLimit;
+            }
+        }
+        if (backwardThrust) {
+            currentYSpeed -= accel * coefficient;
+            if (currentYSpeed < ySpeedLimit * -1) {
+                currentYSpeed = ySpeedLimit * -1;
+            }
+        }
+        if (!forwardThrust && !backwardThrust) {
+            if (currentYSpeed < 0) {
+                currentYSpeed += accel * coefficient;
+            } else {
+                currentYSpeed -= accel * coefficient;
+            }
+        }
+        if (leftThrust) {
+            currentXSpeed -= accel * coefficient;
+            if (currentXSpeed < xSpeedLimit * -1) {
+                currentXSpeed = xSpeedLimit * -1;
+            }
+        }
+        if (rightThrust) {
+            currentXSpeed += accel * coefficient;
+            if (currentXSpeed > xSpeedLimit) {
+                currentXSpeed = xSpeedLimit;
+            }
+        }
+        
         this.translate(currentXSpeed * coefficient, currentYSpeed * coefficient);
     }
 
@@ -104,7 +128,7 @@ public class Player extends Movable {
         hitsAmount++;
         System.out.println("Got hit! Hits: " + hitsAmount);
     }
-    
+
     private void pollKeyboard() {
 
         while (Keyboard.next()) {
@@ -112,38 +136,38 @@ public class Player extends Movable {
             if (Keyboard.getEventKeyState()) {
                 switch (Keyboard.getEventKey()) {
                     case KEY_FORWARD:
-                        this.moveVertically(true);
+                        forwardThrust = true;
                         break;
                     case KEY_BACKWARD:
-                        this.moveVertically(false);
+                        backwardThrust = true;
                         break;
                     case KEY_LEFT:
-                        this.moveSideways(true);
+                        leftThrust = true;
                         break;
                     case KEY_RIGHT:
-                        this.moveSideways(false);
+                        rightThrust = true;
                         break;
                 }
             } // Key lifted event
             else {
                 switch (Keyboard.getEventKey()) {
                     case KEY_FORWARD:
-                        this.moveVertically(false);
+                        forwardThrust = false;
                         break;
                     case KEY_BACKWARD:
-                        this.moveVertically(true);
+                        backwardThrust = false;
                         break;
                     case KEY_LEFT:
-                        this.moveSideways(false);
+                        leftThrust = false;
                         break;
                     case KEY_RIGHT:
-                        this.moveSideways(true);
+                        rightThrust = false;
                         break;
                 }
             }
         }
     }
-    
+
     private void pollMouse() {
         float x = Mouse.getX();
         float y = Mouse.getY();
@@ -167,7 +191,7 @@ public class Player extends Movable {
             }
         }
     }
-    
+
     public void update() {
         pollMouse();
         pollKeyboard();
