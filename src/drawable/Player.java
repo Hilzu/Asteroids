@@ -1,10 +1,14 @@
 package drawable;
 
-import java.util.Collections;
+import main.Bullets;
+import main.Main;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
-
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector4f;
+
 import shader.ShaderManager;
 import shader.Shader;
 
@@ -23,8 +27,16 @@ public class Player extends Movable {
         r, g, b,
         r, g, b
     };
+    public static final int KEY_FORWARD = Keyboard.KEY_W;
+    public static final int KEY_BACKWARD = Keyboard.KEY_S;
+    public static final int KEY_LEFT = Keyboard.KEY_A;
+    public static final int KEY_RIGHT = Keyboard.KEY_D;
+    public static final int BTN_SHOOT = 0;
+    
     private static final float Y_SPEED = 0.001f;
     private static final float X_SPEED = 0.0008f;
+    
+    private static Bullets bullets = new Bullets();
 
     private float currentYSpeed, currentXSpeed;
     private int hitsAmount;
@@ -91,5 +103,75 @@ public class Player extends Movable {
         this.moveTo(0, 0);
         hitsAmount++;
         System.out.println("Got hit! Hits: " + hitsAmount);
+    }
+    
+    private void pollKeyboard() {
+
+        while (Keyboard.next()) {
+            // Key pushed event
+            if (Keyboard.getEventKeyState()) {
+                switch (Keyboard.getEventKey()) {
+                    case KEY_FORWARD:
+                        this.moveVertically(true);
+                        break;
+                    case KEY_BACKWARD:
+                        this.moveVertically(false);
+                        break;
+                    case KEY_LEFT:
+                        this.moveSideways(true);
+                        break;
+                    case KEY_RIGHT:
+                        this.moveSideways(false);
+                        break;
+                }
+            } // Key lifted event
+            else {
+                switch (Keyboard.getEventKey()) {
+                    case KEY_FORWARD:
+                        this.moveVertically(false);
+                        break;
+                    case KEY_BACKWARD:
+                        this.moveVertically(true);
+                        break;
+                    case KEY_LEFT:
+                        this.moveSideways(false);
+                        break;
+                    case KEY_RIGHT:
+                        this.moveSideways(true);
+                        break;
+                }
+            }
+        }
+    }
+    
+    private void pollMouse() {
+        float x = Mouse.getX();
+        float y = Mouse.getY();
+        // Project window coordinates to normal [-1.0, 1.0] coordinate space
+        x -= Main.DISPLAY_WIDTH / 2;     // [0, 800] => [-400, 400]
+        y -= Main.DISPLAY_HEIGHT / 2;
+        x /= Main.DISPLAY_WIDTH / 2;     // [-400, 400] => [-1, 1]
+        y /= Main.DISPLAY_HEIGHT / 2;
+        Vector2f mouseDirection = new Vector2f(x, y);
+
+        this.rotateTo(mouseDirection);
+
+        while (Mouse.next()) {
+            if (Mouse.getEventButtonState()) {
+                switch (Mouse.getEventButton()) {
+                    case BTN_SHOOT: {
+                        bullets.newBullet(this.getLocation(), mouseDirection);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    
+    public void update() {
+        pollMouse();
+        pollKeyboard();
+        this.move(Main.getFrameDelta());
+        this.draw();
     }
 }

@@ -22,11 +22,7 @@ public class Main {
     public static final int FPS = 60;
     public static final int DISPLAY_WIDTH = 800;
     public static final int DISPLAY_HEIGHT = 600;
-    public static final int KEY_FORWARD = Keyboard.KEY_W;
-    public static final int KEY_BACKWARD = Keyboard.KEY_S;
-    public static final int KEY_LEFT = Keyboard.KEY_A;
-    public static final int KEY_RIGHT = Keyboard.KEY_D;
-    public static final int BTN_SHOOT = 0;
+    
     private static Player player;
     private static int frameDelta;
     private static Bullets bullets;
@@ -61,12 +57,7 @@ public class Main {
 
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
-            pollKeyboard();
-            pollMouse();
-
-            player.move(frameDelta);
-            player.draw();
-
+            player.update();
             bullets.update();
             asteroids.update();
 
@@ -92,69 +83,6 @@ public class Main {
             System.out.println("Could not init display!");
             ex.printStackTrace();
             System.exit(1);
-        }
-    }
-
-    private static void pollKeyboard() {
-
-        while (Keyboard.next()) {
-            // Key pushed event
-            if (Keyboard.getEventKeyState()) {
-                switch (Keyboard.getEventKey()) {
-                    case KEY_FORWARD:
-                        player.moveVertically(true);
-                        break;
-                    case KEY_BACKWARD:
-                        player.moveVertically(false);
-                        break;
-                    case KEY_LEFT:
-                        player.moveSideways(true);
-                        break;
-                    case KEY_RIGHT:
-                        player.moveSideways(false);
-                        break;
-                }
-            } // Key lifted event
-            else {
-                switch (Keyboard.getEventKey()) {
-                    case KEY_FORWARD:
-                        player.moveVertically(false);
-                        break;
-                    case KEY_BACKWARD:
-                        player.moveVertically(true);
-                        break;
-                    case KEY_LEFT:
-                        player.moveSideways(false);
-                        break;
-                    case KEY_RIGHT:
-                        player.moveSideways(true);
-                        break;
-                }
-            }
-        }
-    }
-
-    private static void pollMouse() {
-        float x = Mouse.getX();
-        float y = Mouse.getY();
-        // Project window coordinates to normal [-1.0, 1.0] coordinate space
-        x -= DISPLAY_WIDTH / 2;     // [0, 800] => [-400, 400]
-        y -= DISPLAY_HEIGHT / 2;
-        x /= DISPLAY_WIDTH / 2;     // [-400, 400] => [-1, 1]
-        y /= DISPLAY_HEIGHT / 2;
-        Vector2f mouseDirection = new Vector2f(x, y);
-
-        player.rotateTo(mouseDirection);
-
-        while (Mouse.next()) {
-            if (Mouse.getEventButtonState()) {
-                switch (Mouse.getEventButton()) {
-                    case BTN_SHOOT: {
-                        bullets.newBullet(player.getLocation(), mouseDirection);
-                        break;
-                    }
-                }
-            }
         }
     }
 
