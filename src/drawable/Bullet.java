@@ -10,7 +10,7 @@ public class Bullet extends Movable {
 
     private static final float[] VERT = {0, 0, 0};
     private static final float[] COLOR = {.98f, .04f, .7f};
-    private static final float SPEED = 0.002f;
+    private final float SPEED = 0.002f;
 
     public Bullet() {
         super(VERT, COLOR);

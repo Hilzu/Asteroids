@@ -1,6 +1,5 @@
 package tool;
 
-import drawable.Movable;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -15,7 +14,6 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.OpenGLException;
 import org.lwjgl.opengl.Util;
-import org.lwjgl.util.vector.Vector2f;
 
 public class Tools {
 
@@ -66,7 +64,7 @@ public class Tools {
         while (true) {
             try {
                 Util.checkGLError();
-                break;
+                return;
             } catch (OpenGLException ex) {
                 System.out.print(msg + ": ");
                 System.out.println(ex.getMessage());

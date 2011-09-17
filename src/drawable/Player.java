@@ -19,13 +19,13 @@ public class Player extends Movable {
         -0.03f, -0.05f, 0.0f,
         0.03f, -0.05f, 0.0f
     };
-    private static final float r = 0;
-    private static final float g = .5f;
-    private static final float b = .5f;
+    private static final float RED = 0;
+    private static final float GREEN = .5f;
+    private static final float BLUE = .5f;
     private static final float[] COLORS = {
-        r, g, b,
-        r, g, b,
-        r, g, b
+        RED, GREEN, BLUE,
+        RED, GREEN, BLUE,
+        RED, GREEN, BLUE
     };
     public static final int KEY_FORWARD = Keyboard.KEY_W;
     public static final int KEY_BACKWARD = Keyboard.KEY_S;
