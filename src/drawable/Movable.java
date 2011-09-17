@@ -43,7 +43,10 @@ public abstract class Movable extends Drawable {
     public void rotateTo(float x, float y) {
         this.rotateTo(new Vector2f(x, y));
     }
-
+    /**
+     * Rotate this to point towards point indicated by given vector.
+     * @param newDirection Vector to rotate towards.
+     */
     public void rotateTo(Vector2f newDirection) {
         // Vectors are directions from (0, 0). Substracting location from direction transforms direction to work with objects not at (0, 0).
         // Bind newDirection to a new Vector so that the original remains untouched.
@@ -74,7 +77,11 @@ public abstract class Movable extends Drawable {
     public void translate(float x, float y) {
         this.translate(new Vector2f(x, y));
     }
-
+    
+    /**
+     * Move to a certain location on the screen.
+     * @param location New location of this.
+     */
     public void moveTo(Vector2f location) {
         this.moveTo(location.x, location.y);
     }
@@ -84,7 +91,11 @@ public abstract class Movable extends Drawable {
         modelViewMatrix.m31 = y;
         transformed = true;
     }
-
+    
+    /**
+     * Gets the direction of this. Direction is returned in relation of y-axis.
+     * @return Direction relative to the y-axis.
+     */
     public Vector2f getDirection() {
         return new Vector2f(modelViewMatrix.m10, modelViewMatrix.m11);
     }
@@ -92,7 +103,10 @@ public abstract class Movable extends Drawable {
     public Vector2f getLocation() {
         return new Vector2f(modelViewMatrix.m30, modelViewMatrix.m31);
     }
-
+    
+    /**
+     * Move this according to it's logic, which might be an algorithm or keyboard input.
+     */
     public void move() {
         this.move(1);
     }
@@ -106,7 +120,11 @@ public abstract class Movable extends Drawable {
         }
         super.draw();
     }
-
+    
+    /**
+     * Move this and adjust movement using the given coefficient. Coefficient usually is the frameDelta time to make moving FPS-independent.
+     * @param coefficient 
+     */
     public abstract void move(int coefficient);
 
     public float getCollisionBoxX() {
@@ -116,7 +134,12 @@ public abstract class Movable extends Drawable {
     public float getCollisionBoxY() {
         return boundingBoxY;
     }
-
+    
+    /**
+     * Check if this is colliding with the given object.
+     * @param m object to check collision with.
+     * @return true of colliding, false otherwise.
+     */
     public boolean isColliding(Movable m) {
         return isColliding(this, m);
     }
@@ -135,6 +158,7 @@ public abstract class Movable extends Drawable {
         float bYMin = bLoc.y - b.boundingBoxY;
         float bYMax = bLoc.y + b.boundingBoxY;
 
+        //Drawing of bounding boxes.
 //        float[] verts = {
 //            aXMin, aYMin, 0,
 //            aXMin, aYMax, 0,
